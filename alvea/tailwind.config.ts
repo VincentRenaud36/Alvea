@@ -11,6 +11,11 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'jelly-bean': "var(--jelly-bean)",
+        'texas-rose': "var(--texas-rose)",
+        'bittersweet': "var(--bittersweet)",
+        'acquamarine': "var(--bittersweet)",
+        'pelorus': "var(--bittersweet)",
       },
     },
   },
