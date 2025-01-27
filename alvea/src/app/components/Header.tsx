@@ -25,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
         <div className="flex items-center flex-shrink-0">
           <Link href="/">
             <Image
-              src="/Images/alvea-logo.png"
+              src="/Images/alvea-logo.svg"
               alt="Alvéa Logo"
               width={140}
               height={50}
