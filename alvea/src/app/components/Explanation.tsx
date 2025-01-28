@@ -55,8 +55,8 @@ function Explanation() {
           : "Transmettez votre savoir et inspirez les futurs talents"}
       </h2>
 
-      {/* Spline animée */}
-      <div className="absolute top-[250px] left-[50%] -translate-x-1/2 w-auto h-auto z-0">
+      {/* Spline animée (cachée sur mobile) */}
+      <div className="absolute top-[250px] left-[50%] -translate-x-1/2 w-auto h-auto z-0 hidden sm:block">
         <Image
           ref={splineRef}
           src="/Images/spline.svg"
@@ -74,7 +74,7 @@ function Explanation() {
       <div className="relative w-full max-w-5xl flex flex-col items-center z-10">
         {activeTab === "mentor" ? (
           <>
-            {/* Section "Trouver un mentor" (textes inchangés) */}
+            {/* Section "Trouver un mentor" */}
             <div className="flex flex-col md:flex-row items-center justify-between w-full mt-20">
               <Image src="/Images/connect.svg" alt="Graph" width={180} height={180} className="md:ml-10" />
               <div className="md:mr-10 max-w-lg text-justify">
@@ -114,7 +114,7 @@ function Explanation() {
           </>
         ) : (
           <>
-            {/* Section "Devenir mentor" (nouveaux textes) */}
+            {/* Section "Devenir mentor" */}
             <div className="flex flex-col md:flex-row items-center justify-between w-full mt-20">
               <Image src="/Images/connect.svg" alt="Graph" width={180} height={180} className="md:ml-10" />
               <div className="md:mr-10 max-w-lg text-justify">

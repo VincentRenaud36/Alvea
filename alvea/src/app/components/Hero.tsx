@@ -13,7 +13,7 @@ export default function Hero() {
             <span className=""> avec ceux qui l'ont déjà </span>
             <span className="text-jelly-bean bg-white">construit</span>
           </h1>
-          <button className='bg-bittersweet text-white px-8 py-5 rounded-xl text-md md:text-xl font-bold mt-8'>Décrouvrir</button>
+          <button className='bg-bittersweet text-white px-8 py-5 rounded-xl text-md md:text-xl font-bold mt-8'>Découvrir</button>
         </div>
         <div className='w-full md:w-1/2 flex items-center justify-center p-4'>
           <Image 
