@@ -14,16 +14,11 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col w-screen mx-auto">
       <Header isLoggedIn={isLoggedIn} />
-      {/* <Hero />
+      <Hero />
       <Carousel />
-<<<<<<< Updated upstream
-      <Explanation /> */}
+      <Explanation />
       <VideoPodcast />
-      <Footer />
-=======
-      {/* Footer */}
       <Footer isLoggedIn={isLoggedIn} />
->>>>>>> Stashed changes
     </div>
   );
 }

@@ -25,7 +25,7 @@ function VideoPodcast() {
     <div className="bg-white py-16">
         <div className='text-center mb-12'>
             <h2 className='text-3xl md:text-4xl font-bold'>Accédez à des centaines de vidéos et podcasts de professionnels</h2>
-            <button className='bg-bittersweet text-white px-8 py-5 rounded-xl text-md md:text-xl font-bold mt-8'>Décrouvrir</button>
+            <button className='bg-bittersweet text-white px-8 py-5 rounded-xl text-md md:text-xl font-bold mt-8'>Découvrir</button>
         </div>
     <div className="max-w-6xl mx-auto flex justify-center">
       <div className="flex gap-6">
