@@ -3,6 +3,7 @@ import Hero from "./components/Hero";
 import Footer from "./components/Footer";
 import Carousel from "./components/Carousel";
 import Explanation from "./components/Explanation";
+import VideoPodcast from "./components/VideoPodcast";
 
 
 export default function Home() {
@@ -12,9 +13,10 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col w-screen mx-auto">
       <Header isLoggedIn={isLoggedIn} />
-      <Hero />
+      {/* <Hero />
       <Carousel />
-      <Explanation />
+      <Explanation /> */}
+      <VideoPodcast />
       <Footer />
     </div>
   );
