@@ -15,7 +15,7 @@ export default {
         'texas-rose': "var(--texas-rose)",
         'bittersweet': "var(--bittersweet)",
         'acquamarine': "var(--acquamarine)",
-        'pelorus': "var(--bittersweet)",
+        'pelorus': "var(--pelorus)",
       },
     },
   },
