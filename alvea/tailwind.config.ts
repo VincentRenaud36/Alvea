@@ -14,7 +14,7 @@ export default {
         'jelly-bean': "var(--jelly-bean)",
         'texas-rose': "var(--texas-rose)",
         'bittersweet': "var(--bittersweet)",
-        'acquamarine': "var(--bittersweet)",
+        'acquamarine': "var(--acquamarine)",
         'pelorus': "var(--bittersweet)",
       },
     },

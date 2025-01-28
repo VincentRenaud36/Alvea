@@ -8,7 +8,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
   return (
     <header className="bg-[#1F7A93] text-white py-4 shadow-md">
-      <div className="container mx-auto flex justify-between items-center px-6">
+      <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center">
           <Image
