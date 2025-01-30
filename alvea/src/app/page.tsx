@@ -1,6 +1,7 @@
+import Image from "next/image";
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import Footer from "./components/Footer";
 import Carousel from "./components/Carousel";
 import Explanation from "./components/Explanation";
 import VideoPodcast from "./components/VideoPodcast";
@@ -15,9 +16,9 @@ export default function Home() {
       <Header isLoggedIn={isLoggedIn} />
       <Hero />
       <Carousel />
-      {/* <Explanation /> */}
+      <Explanation />
       <VideoPodcast />
-      <Footer />
+      <Footer isLoggedIn={isLoggedIn} />
     </div>
   );
 }
