@@ -13,9 +13,9 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col w-screen mx-auto">
       <Header isLoggedIn={isLoggedIn} />
-      {/* <Hero />
+      <Hero />
       <Carousel />
-      <Explanation /> */}
+      {/* <Explanation /> */}
       <VideoPodcast />
       <Footer />
     </div>

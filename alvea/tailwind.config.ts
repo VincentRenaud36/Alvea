@@ -17,6 +17,9 @@ export default {
         'acquamarine': "var(--acquamarine)",
         'pelorus': "var(--pelorus)",
       },
+      fontFamily: {
+        sans: ['var(--font-raleway)'],
+      },
     },
   },
   plugins: [],

@@ -24,3 +24,9 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer components {
+  .before-title::before {
+    content: ""; /* ou n'importe quel autre contenu */
+  }
+}
