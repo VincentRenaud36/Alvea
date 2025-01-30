@@ -27,7 +27,7 @@ function Explanation() {
   }, []);
 
   return (
-    <div className="mt-20 flex flex-col items-center relative">
+    <div className="mt-0 flex flex-col items-center relative">
       {/* Onglets */}
       <div className="flex justify-center mb-12 w-full">
         <button

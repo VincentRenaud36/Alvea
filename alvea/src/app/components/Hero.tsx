@@ -15,7 +15,7 @@ export default function Hero() {
           </h1>
           <button className='bg-bittersweet text-white px-8 py-5 rounded-xl text-md md:text-xl font-bold mt-8'>Découvrir</button>
         </div>
-        <div className='w-full md:w-1/2 flex items-center justify-center p-4'>
+        <div className='w-full md:w-1/2 flex items-center justify-center'>
           <Image 
               src="/Images/meuf.png" 
               alt="Description de l'image" 

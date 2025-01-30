@@ -13,33 +13,29 @@ export default function Carousel() {
   ];
 
   return (
-    <div className="bg-white py-16">
-        <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-            Pourquoi se limiter à un <span className="bg-acquamarine">seul mentor</span> quand vous en avez des <span className="bg-texas-rose">centaines</span>
-            </h2>
-            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-            Lorem ipsum dolor sit amet consectetur. Aliquam tellus maecenas sit libero mauris mauris pellentesque ut. Gravida vestibulum.
-            </p>
-        </div>
-      <div className="mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 grid-flow-col items-start">
+    <div className="bg-white py-16 flex flex-col items-center">
+      <div className="text-center px-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+          Pourquoi se limiter à un <span className="bg-acquamarine px-2">seul mentor</span> quand vous en avez des <span className="bg-texas-rose px-2">centaines</span>
+        </h2>
+        <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+          Lorem ipsum dolor sit amet consectetur. Aliquam tellus maecenas sit libero mauris mauris pellentesque ut. Gravida vestibulum.
+        </p>
+      </div>
+      <div className="w-full px-4 flex justify-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-start">
           {mentors.map((mentor, index) => (
             <div
               key={mentor.id}
-              className={`
-                rounded-xl overflow-hidden
-                ${index === 1 || index === 3 ? 'mt-10' : ''}
-                ${index === 2 ? 'mt-20' : ''}
-              `}
+              className={`rounded-xl overflow-hidden flex justify-center ${index === 1 || index === 3 ? 'mt-10' : ''} ${index === 2 ? 'mt-20' : ''} sm:block hidden`}
             >
-            <Image
+              <Image
                 src={mentor.image}
                 alt={`Photo de ${mentor.name}`}
-                width={344}
-                height={344}
-                className="object-cover w-[21.5rem] h-[21.5rem]"
-            />
+                width={250}
+                height={250}
+                className="object-cover w-52 h-52 sm:w-60 sm:h-60 rounded-lg"
+              />
             </div>
           ))}
         </div>

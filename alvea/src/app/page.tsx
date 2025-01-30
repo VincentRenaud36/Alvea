@@ -12,7 +12,7 @@ export default function Home() {
   const isLoggedIn = true; // Changez à `true` pour l'état connecté
 
   return (
-    <div className="min-h-screen flex flex-col w-screen mx-auto">
+    <div className="min-h-screen flex flex-col mx-auto">
       <Header isLoggedIn={isLoggedIn} />
       <Hero />
       <Carousel />
