@@ -199,13 +199,12 @@ const allContents: Content[] = [
     spotifyEmbedUrl:
       "https://open.spotify.com/embed/episode/2VrnOiaym1fDHTpM2KsL7U?utm_source=generator",
   },
-
   // Duplication des Podcasts pour atteindre 11 podcasts
   ...Array.from({ length: 8 }, (_, index) => ({
     id: 13 + index,
-    type: "podcast",
+    type: "podcast" as const,
     name: "Mickael Schmidt",
-    profession: "Kinésithérapeute",
+    profession: "Kinésithérapeute", 
     userName: "Mickael Schmidt",
     userJob: "Kinésithérapeute ↗",
     userDescription: "Podcast sur la rééducation sportive.",
@@ -530,31 +529,36 @@ export default function Discover() {
 
         {/* Grille */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full md:w-3/4">
-          {displayedContents.map((c, i) => {
-            if (c.type === "video" && c.youtubeId) {
-              // Carte vidéo => 9:16 miniature
-              const thumbUrl = `https://img.youtube.com/vi/${c.youtubeId}/0.jpg`;
-              return (
-                <div
-                  key={c.id}
-                  className="cursor-pointer rounded-xl overflow-hidden shadow-lg"
-                  onClick={() => openModal(i)}
-                >
-                  <div className="aspect-[9/16] relative w-full">
-                    <Image
-                      src={thumbUrl}
-                      alt={c.name}
-                      fill
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
-                    <div className="absolute bottom-2 left-2 text-white">
-                      <p className="font-semibold">{c.name}</p>
-                      <p className="text-sm">{c.profession}</p>
-                    </div>
+        {displayedContents.map((c, i) => {
+          if (c.type === "video" && c.youtubeId) {
+            // Carte vidéo => 9:16 miniature
+            const thumbUrl = `https://img.youtube.com/vi/${c.youtubeId}/0.jpg`;
+            return (
+              <div
+                key={c.id}
+                className="cursor-pointer rounded-xl overflow-hidden shadow-lg"
+                onClick={() => openModal(i)}
+              >
+                <div className="aspect-[9/16] relative w-full">
+                  <Image
+                    src={thumbUrl}
+                    alt={c.name}
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
+                  <div className="absolute bottom-2 left-2 text-white">
+                    <Link href={`/profil/${c.userName}`} className="flex items-center space-x-2">
+                      <div className="w-10 h-10 bg-gray-600 rounded-full flex-shrink-0" />
+                      <div>
+                        <p className="font-semibold">{c.name}</p>
+                        <p className="text-sm">{c.profession}</p>
+                      </div>
+                    </Link>
                   </div>
                 </div>
-              );
+              </div>
+            );
             } else if (c.type === "podcast" && c.spotifyEmbedUrl) {
               return (
                 <div
