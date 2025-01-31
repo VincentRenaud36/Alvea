@@ -18,6 +18,7 @@ const Footer: React.FC<FooterProps> = ({ isLoggedIn }) => {
         <div className="hidden md:grid grid-cols-3 items-start gap-8">
           {/* Logo et réseaux sociaux */}
           <div className="flex flex-col items-center md:items-start">
+          <Link href="/">
             <Image
               src="/Images/alvea-logo-text.svg"
               alt="Alvéa Logo"
@@ -25,6 +26,7 @@ const Footer: React.FC<FooterProps> = ({ isLoggedIn }) => {
               height={50}
               priority
             />
+            </Link>
             <div className="flex space-x-4 mt-4">
               <Link href="https://facebook.com" target="_blank">
                 <Image
