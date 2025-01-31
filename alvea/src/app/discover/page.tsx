@@ -26,6 +26,7 @@ interface Content {
   userJob: string;
   userDescription?: string;
   image?: string; // Pour le podcast
+  spotifyEmbedUrl?: string; // Ajouté pour les podcasts
 }
 
 /** Filtres (exemple) */
@@ -65,8 +66,9 @@ const filterCategories: FilterCategory[] = [
   },
 ];
 
-/** Tableau mixte : 8 vidéos, 4 podcasts */
+/** Tableau mixte : 8 vidéos, 11 podcasts */
 const allContents: Content[] = [
+  // Vidéos existantes
   {
     id: 1,
     type: "video",
@@ -75,7 +77,8 @@ const allContents: Content[] = [
     youtubeId: "c6u-I85peig",
     userName: "Sophie Lambert",
     userJob: "Responsable RH ↗",
-    userDescription: "Pellentesque nec ullamcorper odio. Lorem ipsum.Pellentesque nec ullamcorper odio. Lorem ipsum.Pellentesque nec ullamcorper odio. Lorem ipsum.Pellentesque nec ullamcorper odio. Lorem ipsum.",
+    userDescription:
+      "Pellentesque nec ullamcorper odio. Lorem ipsum.Pellentesque nec ullamcorper odio. Lorem ipsum.Pellentesque nec ullamcorper odio. Lorem ipsum.Pellentesque nec ullamcorper odio. Lorem ipsum.",
   },
   {
     id: 2,
@@ -86,16 +89,6 @@ const allContents: Content[] = [
     userName: "Camille Moreau",
     userJob: "Couturière ↗",
     userDescription: "Praesent aliquam ipsum lectus, non condimentum nulla.",
-  },
-  {
-    id: 3,
-    type: "podcast",
-    name: "Mickael Schmidt",
-    profession: "Kinésithérapeute",
-    userName: "Mickael Schmidt",
-    userJob: "Kinésithérapeute ↗",
-    userDescription: "Podcast sur la rééducation sportive.",
-    image: "/Images/podcast1.jpg",
   },
   {
     id: 4,
@@ -128,16 +121,6 @@ const allContents: Content[] = [
     userDescription: "Nunc ornare dui quis risus ornare.",
   },
   {
-    id: 7,
-    type: "podcast",
-    name: "Theo Legrand",
-    profession: "Architecte",
-    userName: "Theo Legrand",
-    userJob: "Architecte ↗",
-    userDescription: "Deuxième podcast. Lorem ipsum dolor sit amet.",
-    image: "/Images/podcast2.jpg",
-  },
-  {
     id: 8,
     type: "video",
     name: "Arthur Fisher",
@@ -155,17 +138,8 @@ const allContents: Content[] = [
     youtubeId: "9ps8QpVxinI",
     userName: "Robert Dubois",
     userJob: "Responsable magasin",
-    userDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 10,
-    type: "podcast",
-    name: "Ronald Richards",
-    profession: "Forgeron",
-    userName: "Ronald Richards",
-    userJob: "Forgeron ↗",
-    userDescription: "Troisième podcast. Sed sed purus et ante dignissim.",
-    image: "/Images/podcast3.jpg",
+    userDescription:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   },
   {
     id: 11,
@@ -187,11 +161,65 @@ const allContents: Content[] = [
     userJob: "Tatoueuse ↗",
     userDescription: "Quisque facilisis pharetra massa.",
   },
+
+  // Podcasts existants
+  {
+    id: 3,
+    type: "podcast",
+    name: "Mickael Schmidt",
+    profession: "Kinésithérapeute",
+    userName: "Mickael Schmidt",
+    userJob: "Kinésithérapeute ↗",
+    userDescription: "Podcast sur la rééducation sportive.",
+    image: "/Images/podcast1.jpg",
+    spotifyEmbedUrl:
+      "https://open.spotify.com/embed/episode/2VrnOiaym1fDHTpM2KsL7U?utm_source=generator",
+  },
+  {
+    id: 7,
+    type: "podcast",
+    name: "Theo Legrand",
+    profession: "Architecte",
+    userName: "Theo Legrand",
+    userJob: "Architecte ↗",
+    userDescription: "Deuxième podcast. Lorem ipsum dolor sit amet.",
+    image: "/Images/podcast2.jpg",
+    spotifyEmbedUrl:
+      "https://open.spotify.com/embed/episode/2VrnOiaym1fDHTpM2KsL7U?utm_source=generator",
+  },
+  {
+    id: 10,
+    type: "podcast",
+    name: "Ronald Richards",
+    profession: "Forgeron",
+    userName: "Ronald Richards",
+    userJob: "Forgeron ↗",
+    userDescription: "Troisième podcast. Sed sed purus et ante dignissim.",
+    image: "/Images/podcast3.jpg",
+    spotifyEmbedUrl:
+      "https://open.spotify.com/embed/episode/2VrnOiaym1fDHTpM2KsL7U?utm_source=generator",
+  },
+
+  // Duplication des Podcasts pour atteindre 11 podcasts
+  ...Array.from({ length: 8 }, (_, index) => ({
+    id: 13 + index,
+    type: "podcast",
+    name: "Mickael Schmidt",
+    profession: "Kinésithérapeute",
+    userName: "Mickael Schmidt",
+    userJob: "Kinésithérapeute ↗",
+    userDescription: "Podcast sur la rééducation sportive.",
+    image: "/Images/podcast1.jpg",
+    spotifyEmbedUrl:
+      "https://open.spotify.com/embed/episode/2VrnOiaym1fDHTpM2KsL7U?utm_source=generator",
+  })),
 ];
 
 export default function Discover() {
   /** Sélection "Vidéo" ou "Podcast" */
-  const [selectedType, setSelectedType] = useState<"video" | "podcast">("video");
+  const [selectedType, setSelectedType] = useState<"video" | "podcast">(
+    "video"
+  );
 
   /** Stockage des filtres (cochés/décochés) */
   const [filtersState, setFiltersState] = useState<FilterState>({});
@@ -200,7 +228,10 @@ export default function Discover() {
   const [expandedCats, setExpandedCats] = useState<{
     [cat: string]: boolean;
   }>(() =>
-    filterCategories.reduce((acc, fc) => ({ ...acc, [fc.category]: true }), {})
+    filterCategories.reduce(
+      (acc, fc) => ({ ...acc, [fc.category]: true }),
+      {}
+    )
   );
 
   /** Modal : index de l'élément affiché, ou null si fermé */
@@ -241,35 +272,39 @@ export default function Discover() {
     if (!activeIframe) return;
 
     const handlePlayerStateChange = (event: MessageEvent) => {
-      console.log('Received message:', event.data); // Log brut des messages reçus
+      console.log("Received message:", event.data); // Log brut des messages reçus
       try {
         const data = event.data; // Utilisez directement event.data sans JSON.parse
-        console.log('YouTube Event Data:', data); // Log des données reçues
+        console.log("YouTube Event Data:", data); // Log des données reçues
 
         // Vérifie qu'on écoute bien l'iframe sélectionnée
         if (data.event === "onStateChange") {
           setPlayerState(data.data); // Met à jour l'état
           playerStateRef.current = data.data; // Met à jour la référence
 
-          if (data.data === 0) { // Vidéo terminée
-            console.log('Video ended. Attempting to replay...');
+          if (data.data === 0) {
+            // Vidéo terminée
+            console.log("Video ended. Attempting to replay...");
             activeIframe.contentWindow?.postMessage(
               JSON.stringify({
                 event: "command",
                 func: "seekTo",
-                args: [0, true] // Revenir au début de la vidéo
+                args: [0, true], // Revenir au début de la vidéo
               }),
               "https://www.youtube.com" // Spécifiez l'origine pour des raisons de sécurité
             );
           }
         }
       } catch (error) {
-        console.error('Error processing YouTube event data:', error); // Log des erreurs de parsing
+        console.error(
+          "Error processing YouTube event data:",
+          error
+        ); // Log des erreurs de parsing
       }
     };
 
     window.addEventListener("message", handlePlayerStateChange);
-    console.log('Added message event listener for YouTube iframe.');
+    console.log("Added message event listener for YouTube iframe.");
 
     // Forcer la lecture initiale avec un léger délai
     setTimeout(() => {
@@ -277,16 +312,16 @@ export default function Discover() {
         JSON.stringify({
           event: "command",
           func: "playVideo",
-          args: ""
+          args: "",
         }),
         "https://www.youtube.com" // Spécifiez l'origine pour des raisons de sécurité
       );
-      console.log('Sent playVideo command to YouTube iframe.');
+      console.log("Sent playVideo command to YouTube iframe.");
     }, 1000); // Attendre 1 seconde pour s'assurer que l'iframe est prête
 
     return () => {
       window.removeEventListener("message", handlePlayerStateChange);
-      console.log('Removed message event listener for YouTube iframe.');
+      console.log("Removed message event listener for YouTube iframe.");
     };
   }, [selectedIndex]);
 
@@ -295,7 +330,10 @@ export default function Discover() {
     if (selectedIndex === null) return;
 
     const intervalId = setInterval(() => {
-      console.log(`Player State at ${new Date().toLocaleTimeString()}:`, playerStateRef.current);
+      console.log(
+        `Player State at ${new Date().toLocaleTimeString()}:`,
+        playerStateRef.current
+      );
     }, 1000); // Toutes les secondes
 
     return () => {
@@ -303,9 +341,6 @@ export default function Discover() {
     };
   }, [selectedIndex]);
 
-
-
-  
   /** Gère l’alternance "vidéo" / "podcast" */
   const handleTypeChange = (type: "video" | "podcast") => {
     setSelectedType(type);
@@ -332,7 +367,9 @@ export default function Discover() {
   /** Liste des items à afficher => on filtre par type. 
    * (On pourrait aussi filtrer selon filtersState si besoin.)
    */
-  const displayedContents = allContents.filter((c) => c.type === selectedType);
+  const displayedContents = allContents.filter(
+    (c) => c.type === selectedType
+  );
 
   /** Ouvrir le modal sur l'item d'index i */
   const openModal = (i: number) => {
@@ -361,7 +398,10 @@ export default function Discover() {
 
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     if (selectedIndex === null || scrollLock) return;
-    if (e.deltaY > 0 && selectedIndex < displayedContents.length - 1) {
+    if (
+      e.deltaY > 0 &&
+      selectedIndex < displayedContents.length - 1
+    ) {
       goTo(selectedIndex + 1);
     } else if (e.deltaY < 0 && selectedIndex > 0) {
       goTo(selectedIndex - 1);
@@ -376,10 +416,14 @@ export default function Discover() {
   const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
     if (selectedIndex === null || scrollLock) return;
     if (touchStartRef.current === null) return;
-    const diff = touchStartRef.current - e.changedTouches[0].clientY;
+    const diff =
+      touchStartRef.current - e.changedTouches[0].clientY;
     if (Math.abs(diff) > 50) {
       // swipe up => next
-      if (diff > 0 && selectedIndex < displayedContents.length - 1) {
+      if (
+        diff > 0 &&
+        selectedIndex < displayedContents.length - 1
+      ) {
         goTo(selectedIndex + 1);
       }
       // swipe down => prev
@@ -424,7 +468,9 @@ export default function Discover() {
       <div className="container mx-auto px-4 py-8 flex gap-8">
         {/* Sidebar */}
         <div className="w-1/4 hidden md:block">
-          <h3 className="font-bold text-lg mb-4 text-primary">Filtrer</h3>
+          <h3 className="font-bold text-lg mb-4 text-primary">
+            Filtrer
+          </h3>
 
           {/* Choix forcé : Vidéo ou Podcast */}
           <div className="mb-6">
@@ -458,7 +504,9 @@ export default function Discover() {
                 onClick={() => toggleCat(cat.category)}
               >
                 {cat.category}
-                <span>{expandedCats[cat.category] ? "▲" : "▼"}</span>
+                <span>
+                  {expandedCats[cat.category] ? "▲" : "▼"}
+                </span>
               </h4>
               {expandedCats[cat.category] && (
                 <ul className="space-y-2">
@@ -481,7 +529,7 @@ export default function Discover() {
         </div>
 
         {/* Grille */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 w-full md:w-3/4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full md:w-3/4">
           {displayedContents.map((c, i) => {
             if (c.type === "video" && c.youtubeId) {
               // Carte vidéo => 9:16 miniature
@@ -507,37 +555,43 @@ export default function Discover() {
                   </div>
                 </div>
               );
-            } else {
-              // Podcast => design "bouton horizontal aquamarine"
+            } else if (c.type === "podcast" && c.spotifyEmbedUrl) {
               return (
                 <div
                   key={c.id}
-                  className="bg-jelly-bean text-white rounded-3xl shadow-lg px-4 py-2 flex items-center gap-4 cursor-pointer"
-                  onClick={() => openModal(i)}
+                  className="rounded-xl overflow-hidden shadow-lg bg-jelly-bean border border-gray-200 relative"
+                  style={{ backgroundColor: "#005a6f" }}
                 >
-                  {/* Avatar */}
-                  <div className="w-10 h-10 rounded-full overflow-hidden">
-                    {c.image && (
-                      <Image
-                        src={c.image}
-                        alt={c.name}
-                        width={40}
-                        height={40}
-                        className="object-cover"
-                      />
-                    )}
+                  {/* Informations de l'utilisateur avec image de profil */}
+                  <div className="p-3 text-white flex items-center gap-3" style={{ backgroundColor: "#005a6f" }}>
+                  <Link href={`/profil/${c.userName}`} className="flex flex-col"><div className="w-10 h-10 bg-gray-600 rounded-full" /></Link>
+                    <Link href={`/profil/${c.userName}`} className="flex flex-col">
+                      <span className="font-semibold text-sm">{c.name}</span>
+                      <span className="text-xs text-gray-300">{c.profession}</span>
+                    </Link>
                   </div>
-                  {/* Textes */}
-                  <div className="flex flex-col">
-                    <span className="font-semibold">{c.name}</span>
-                    <span className="text-sm">{c.profession}</span>
-                  </div>
-                  {/* Play icon */}
-                  <div className="ml-auto w-8 h-8 bg-white text-jelly-bean rounded-full flex items-center justify-center">
-                    ▶
-                  </div>
+
+                  {/* Vérification de l'URL Spotify pour éviter les erreurs */}
+                  {c.spotifyEmbedUrl.includes("open.spotify.com/embed") ? (
+                    <iframe
+                      style={{ borderRadius: "12px", backgroundColor: "#005a6f" }}
+                      src={c.spotifyEmbedUrl}
+                      width="100%"
+                      height="152"
+                      frameBorder="0"
+                      allowFullScreen
+                      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                      loading="lazy"
+                    ></iframe>
+                  ) : (
+                    <div className="p-4 text-center text-red-500">
+                      <p>Épisode non disponible</p>
+                    </div>
+                  )}
                 </div>
               );
+            } else {
+              return null;
             }
           })}
         </div>
@@ -545,8 +599,8 @@ export default function Discover() {
 
       <Footer isLoggedIn />
 
-      {/* MODAL => rendu conditionnel avec animation de glissement */}
-      {item && (
+      {/* MODAL => rendu conditionnel avec animation de glissement uniquement pour les vidéos */}
+      {item && item.type === "video" && (
         <div
           className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center"
           onClick={closeModal}
@@ -581,7 +635,10 @@ export default function Discover() {
                         ✕
                       </button>
 
-                      <div className="yt-wrapper w-full h-full" onClick={(e) => e.stopPropagation()}>
+                      <div
+                        className="yt-wrapper w-full h-full"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <div className="yt-frame-container">
                           <iframe
                             id={`player-${elem.youtubeId}`} // Assignation d'un ID unique
@@ -599,7 +656,10 @@ export default function Discover() {
                       </div>
 
                       {/* Overlay d'info (bas) */}
-                      <div className="absolute bottom-0 left-0 w-full p-4 text-white bg-gradient-to-t from-black/60 to-transparent pointer-events-none" onClick={(e) => e.stopPropagation()}>
+                      <div
+                        className="absolute bottom-0 left-0 w-full p-4 text-white bg-gradient-to-t from-black/60 to-transparent pointer-events-none"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <div className="pointer-events-auto relative">
                           <div className="flex items-center justify-between">
                             <Link
@@ -654,71 +714,7 @@ export default function Discover() {
                         </div>
                       </div>
                     </div>
-                  ) : (
-                    // PODCAST => design “fond noir” dans le modal, arrondi
-                    <div className="relative w-[320px] sm:w-[380px] md:w-[420px] bg-black text-white rounded-lg overflow-hidden flex flex-col animate-slide-in">
-                      {/* Croix */}
-                      <button
-                        className="absolute top-2 right-2 text-white text-3xl z-10"
-                        onClick={closeModal}
-                      >
-                        ✕
-                      </button>
-                      <div className="aspect-[9/16] w-full relative">
-                        {elem.image && (
-                          <Image
-                            src={elem.image}
-                            alt={elem.name}
-                            fill
-                            className="object-cover"
-                          />
-                        )}
-                      </div>
-
-                      {/* Player factice (icônes) */}
-                      <div className="p-4 bg-black flex flex-col gap-2">
-                        <div className="flex items-center justify-center gap-3 mb-2">
-                          <span className="text-sm">1x</span>
-                          <button className="border border-white rounded-full px-2 py-1 text-sm">
-                            -15s
-                          </button>
-                          <button className="text-2xl border border-white rounded-full px-3 py-1">
-                            ▶
-                          </button>
-                          <button className="border border-white rounded-full px-2 py-1 text-sm">
-                            +15s
-                          </button>
-                          <button className="text-sm">🔇</button>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <span>0:00</span>
-                          <div className="flex-grow h-1 bg-gray-400 rounded" />
-                          <span>4:32</span>
-                        </div>
-                      </div>
-
-                      {/* Bas => user + share */}
-                      <div className="p-4 bg-black flex items-center justify-between">
-                        <div className="flex items-center gap-2 no-underline">
-                          <div className="w-10 h-10 bg-gray-500 rounded-full" />
-                          <div className="flex flex-col text-sm no-underline">
-                            <span className="font-semibold no-underline">
-                              {elem.userName}
-                            </span>
-                            <span className="opacity-90 text-xs no-underline">
-                              {elem.userJob}
-                            </span>
-                          </div>
-                        </div>
-                        <button
-                          className="border border-white rounded-full px-3 py-1 text-sm"
-                          onClick={shareItem}
-                        >
-                          ↗
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                  ) : null}
                 </div>
               ))}
             </div>
