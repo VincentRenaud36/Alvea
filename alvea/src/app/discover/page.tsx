@@ -234,7 +234,7 @@ export default function Discover() {
             "*"
           );
         }
-      }, 0); // Petit délai pour éviter que YouTube l'ignore
+      }, 500); // Petit délai pour éviter que YouTube l'ignore
     }
   }, [selectedIndex]);
 
@@ -481,11 +481,9 @@ export default function Discover() {
       {item && (
         <div
           className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center"
-          onClick={closeModal}
         >
           <div
             className="relative w-full h-full overflow-hidden flex items-center justify-center"
-            onClick={closeModal}
             onWheel={handleWheel}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}

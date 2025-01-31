@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
 import Header from "../components/Header";
-
+import Footer from "../components/Footer";
 
 
 export default function Home() {
@@ -127,6 +127,7 @@ export default function Home() {
                     .yt-frame-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
                 }
             `}</style>
+            <Footer isLoggedIn={isLoggedIn} />
         </div>
     );
 }
