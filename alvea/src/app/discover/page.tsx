@@ -212,6 +212,14 @@ export default function Discover() {
   /** “Plus/Moins” description dans le modal */
   const [descExpanded, setDescExpanded] = useState(false);
 
+  /** État pour stocker l'état du lecteur YouTube */
+  const [playerState, setPlayerState] = useState<number | null>(null);
+
+  /** Référence pour conserver la dernière valeur de playerState */
+  const playerStateRef = useRef<number | null>(null);
+
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
   // Désactive le scroll de la page en background
   useEffect(() => {
     if (selectedIndex !== null) {
@@ -224,58 +232,84 @@ export default function Discover() {
     };
   }, [selectedIndex]);
 
+  // Gestion des événements du lecteur YouTube
   useEffect(() => {
     if (selectedIndex === null) return;
-  
+
     const activeIframe = document.querySelectorAll("iframe")[selectedIndex];
-  
+
     if (!activeIframe) return;
-  
+
     const handlePlayerStateChange = (event: MessageEvent) => {
+      console.log('Received message:', event.data); // Log brut des messages reçus
       try {
-        const data = JSON.parse(event.data);
+        const data = event.data; // Utilisez directement event.data sans JSON.parse
         console.log('YouTube Event Data:', data); // Log des données reçues
-  
+
         // Vérifie qu'on écoute bien l'iframe sélectionnée
-        if (data.event === "onStateChange" && data.data === 0) { // Assurez-vous que c'est 'data.data'
-          console.log('Video ended. Attempting to replay...'); // Log de l'intention de replay
-          activeIframe.contentWindow?.postMessage(
-            '{"event":"command","func":"playVideo","args":""}',
-            "*"
-          );
+        if (data.event === "onStateChange") {
+          setPlayerState(data.data); // Met à jour l'état
+          playerStateRef.current = data.data; // Met à jour la référence
+
+          if (data.data === 0) { // Vidéo terminée
+            console.log('Video ended. Attempting to replay...');
+            activeIframe.contentWindow?.postMessage(
+              JSON.stringify({
+                event: "command",
+                func: "seekTo",
+                args: [0, true] // Revenir au début de la vidéo
+              }),
+              "https://www.youtube.com" // Spécifiez l'origine pour des raisons de sécurité
+            );
+          }
         }
       } catch (error) {
-        console.error('Error parsing YouTube event data:', error); // Log des erreurs de parsing
+        console.error('Error processing YouTube event data:', error); // Log des erreurs de parsing
       }
     };
-  
+
     window.addEventListener("message", handlePlayerStateChange);
     console.log('Added message event listener for YouTube iframe.');
-  
-    // Forcer la lecture initiale
-    activeIframe.contentWindow?.postMessage(
-      '{"event":"command","func":"playVideo","args":""}',
-      "*"
-    );
-    console.log('Sent playVideo command to YouTube iframe.');
-  
+
+    // Forcer la lecture initiale avec un léger délai
+    setTimeout(() => {
+      activeIframe.contentWindow?.postMessage(
+        JSON.stringify({
+          event: "command",
+          func: "playVideo",
+          args: ""
+        }),
+        "https://www.youtube.com" // Spécifiez l'origine pour des raisons de sécurité
+      );
+      console.log('Sent playVideo command to YouTube iframe.');
+    }, 1000); // Attendre 1 seconde pour s'assurer que l'iframe est prête
+
     return () => {
       window.removeEventListener("message", handlePlayerStateChange);
       console.log('Removed message event listener for YouTube iframe.');
     };
   }, [selectedIndex]);
-  
-  
-  
-  
+
+  // Nouveau useEffect pour interroger et afficher l'état du lecteur toutes les secondes
+  useEffect(() => {
+    if (selectedIndex === null) return;
+
+    const intervalId = setInterval(() => {
+      console.log(`Player State at ${new Date().toLocaleTimeString()}:`, playerStateRef.current);
+    }, 1000); // Toutes les secondes
+
+    return () => {
+      clearInterval(intervalId); // Nettoyer l'intervalle lors du démontage ou du changement
+    };
+  }, [selectedIndex]);
 
 
-  
 
+  
   /** Gère l’alternance "vidéo" / "podcast" */
   const handleTypeChange = (type: "video" | "podcast") => {
     setSelectedType(type);
-    setSelectedIndex(null); // ferme le modal si on en avait un
+    setSelectedIndex(null); // Ferme le modal si on en avait un
     setDescExpanded(false);
   };
 
@@ -392,7 +426,7 @@ export default function Discover() {
         <div className="w-1/4 hidden md:block">
           <h3 className="font-bold text-lg mb-4 text-primary">Filtrer</h3>
 
-          {/* Choix forced : Vidéo ou Podcast */}
+          {/* Choix forcé : Vidéo ou Podcast */}
           <div className="mb-6">
             <label className="flex items-center gap-2 mb-2 cursor-pointer">
               <input
@@ -549,17 +583,18 @@ export default function Discover() {
 
                       <div className="yt-wrapper w-full h-full" onClick={(e) => e.stopPropagation()}>
                         <div className="yt-frame-container">
-                        <iframe
-                          key={elem.youtubeId} // 🔥 Force le rechargement de l'iframe si nécessaire
-                          src={`https://www.youtube.com/embed/${elem.youtubeId}?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${elem.youtubeId}&modestbranding=1&controls=0&playsinline=1&rel=0&showinfo=0`} // Suppression de la duplication de l'ID
-                          title="YouTube short"
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                          referrerPolicy="strict-origin-when-cross-origin"
-                          allowFullScreen
-                          loading="lazy" // 🔥 Ajout du chargement paresseux
-                          className="w-full h-full"
-                        />
+                          <iframe
+                            id={`player-${elem.youtubeId}`} // Assignation d'un ID unique
+                            key={elem.youtubeId} // 🔥 Force le rechargement de l'iframe si nécessaire
+                            src={`https://www.youtube.com/embed/${elem.youtubeId}?enablejsapi=1&autoplay=1&mute=1&modestbranding=1&controls=0&playsinline=1&rel=0&showinfo=0`} // Suppression de la duplication de l'ID
+                            title="YouTube short"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allowFullScreen
+                            loading="lazy" // 🔥 Ajout du chargement paresseux
+                            className="w-full h-full"
+                          />
                         </div>
                       </div>
 
@@ -727,8 +762,6 @@ export default function Discover() {
             width: 100%;
             height: 100%;
             pointer-events: none;
-            /* Autoriser l'autoplay */
-            /* parfois utile : allow='autoplay; ...' => fait dans la prop iframe */
           }
         }
         @media screen and (max-width: 767px) {
