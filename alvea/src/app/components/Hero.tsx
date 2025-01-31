@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Hero() {
   return (
@@ -15,9 +16,10 @@ export default function Hero() {
             <span> avec ceux qui l'ont déjà </span>
             <span className="text-jelly-bean bg-white">construit</span>
           </h1>
+          <Link href="/discover">
           <button className='bg-bittersweet text-white px-8 py-5 rounded-xl text-md md:text-xl font-bold mt-4 transform hover:scale-105 transition-transform duration-300'>
             Découvrir
-          </button>
+          </button></Link>
         </div>
         <div className='w-full md:w-1/2 flex items-center justify-center animate-fade-in'>
           <Image 

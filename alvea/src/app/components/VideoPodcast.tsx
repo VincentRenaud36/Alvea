@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 function VideoPodcast() {
     const mentors = [
@@ -24,7 +25,7 @@ function VideoPodcast() {
         <div className="bg-white py-16 flex flex-col items-center">
             <div className='text-center px-4'>
                 <h2 className='text-3xl md:text-4xl font-bold'>Accédez à des centaines de vidéos et podcasts de professionnels</h2>
-                <button className='bg-bittersweet text-white px-8 py-5 rounded-xl text-md md:text-xl font-bold mt-8'>Découvrir</button>
+                <Link href="/discover"><button className='bg-bittersweet text-white px-8 py-5 rounded-xl text-md md:text-xl font-bold mt-8'>Découvrir</button></Link>
             </div>
             <div className="max-w-6xl mx-auto flex justify-center px-4 sm:px-6 lg:px-8">
                 <div className="hidden sm:flex gap-6">
