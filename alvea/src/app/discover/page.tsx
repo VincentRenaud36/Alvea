@@ -75,7 +75,7 @@ const allContents: Content[] = [
     youtubeId: "c6u-I85peig",
     userName: "Sophie Lambert",
     userJob: "Responsable RH ↗",
-    userDescription: "Pellentesque nec ullamcorper odio. Lorem ipsum...",
+    userDescription: "Pellentesque nec ullamcorper odio. Lorem ipsum.Pellentesque nec ullamcorper odio. Lorem ipsum.Pellentesque nec ullamcorper odio. Lorem ipsum.Pellentesque nec ullamcorper odio. Lorem ipsum.",
   },
   {
     id: 2,
@@ -225,18 +225,52 @@ export default function Discover() {
   }, [selectedIndex]);
 
   useEffect(() => {
-    if (selectedIndex !== null) {
-      setTimeout(() => {
-        const iframe = document.querySelector("iframe");
-        if (iframe) {
-          iframe.contentWindow?.postMessage(
-            '{"event":"command","func":"playVideo","args":""}', // 🔥 Force la lecture
+    if (selectedIndex === null) return;
+  
+    const activeIframe = document.querySelectorAll("iframe")[selectedIndex];
+  
+    if (!activeIframe) return;
+  
+    const handlePlayerStateChange = (event: MessageEvent) => {
+      try {
+        const data = JSON.parse(event.data);
+        console.log('YouTube Event Data:', data); // Log des données reçues
+  
+        // Vérifie qu'on écoute bien l'iframe sélectionnée
+        if (data.event === "onStateChange" && data.data === 0) { // Assurez-vous que c'est 'data.data'
+          console.log('Video ended. Attempting to replay...'); // Log de l'intention de replay
+          activeIframe.contentWindow?.postMessage(
+            '{"event":"command","func":"playVideo","args":""}',
             "*"
           );
         }
-      }, 500); // Petit délai pour éviter que YouTube l'ignore
-    }
+      } catch (error) {
+        console.error('Error parsing YouTube event data:', error); // Log des erreurs de parsing
+      }
+    };
+  
+    window.addEventListener("message", handlePlayerStateChange);
+    console.log('Added message event listener for YouTube iframe.');
+  
+    // Forcer la lecture initiale
+    activeIframe.contentWindow?.postMessage(
+      '{"event":"command","func":"playVideo","args":""}',
+      "*"
+    );
+    console.log('Sent playVideo command to YouTube iframe.');
+  
+    return () => {
+      window.removeEventListener("message", handlePlayerStateChange);
+      console.log('Removed message event listener for YouTube iframe.');
+    };
   }, [selectedIndex]);
+  
+  
+  
+  
+
+
+  
 
   /** Gère l’alternance "vidéo" / "podcast" */
   const handleTypeChange = (type: "video" | "podcast") => {
@@ -481,18 +515,20 @@ export default function Discover() {
       {item && (
         <div
           className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center"
+          onClick={closeModal}
         >
           <div
             className="relative w-full h-full overflow-hidden flex items-center justify-center"
             onWheel={handleWheel}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
+            onClick={closeModal}
           >
             {/* Container: translateY(-selectedIndex * 100%) */}
             <div
               className="absolute top-0 left-0 w-full h-full transition-transform duration-500 ease-out"
               style={{
-                transform: `translateY(-${selectedIndex * 100}%)`,
+                transform: `translateY(-${selectedIndex! * 100}%)`,
               }}
             >
               {displayedContents.map((elem, i) => (
@@ -511,24 +547,24 @@ export default function Discover() {
                         ✕
                       </button>
 
-                      <div className="yt-wrapper w-full h-full">
+                      <div className="yt-wrapper w-full h-full" onClick={(e) => e.stopPropagation()}>
                         <div className="yt-frame-container">
-                          <iframe
-                            key={elem.youtubeId} // 🔥 Force le rechargement de l'iframe si nécessaire
-                            src={`https://www.youtube.com/embed/${elem.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${elem.youtubeId}&modestbranding=1&controls=0&playsinline=1&rel=0&enablejsapi=1&showinfo=0`}
-                            title="YouTube short"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            allowFullScreen
-                            loading="lazy" // 🔥 Ajout du chargement paresseux
-                            className="w-full h-full"
-                          />
+                        <iframe
+                          key={elem.youtubeId} // 🔥 Force le rechargement de l'iframe si nécessaire
+                          src={`https://www.youtube.com/embed/${elem.youtubeId}?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${elem.youtubeId}&modestbranding=1&controls=0&playsinline=1&rel=0&showinfo=0`} // Suppression de la duplication de l'ID
+                          title="YouTube short"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          allowFullScreen
+                          loading="lazy" // 🔥 Ajout du chargement paresseux
+                          className="w-full h-full"
+                        />
                         </div>
                       </div>
 
                       {/* Overlay d'info (bas) */}
-                      <div className="absolute bottom-0 left-0 w-full p-4 text-white bg-gradient-to-t from-black/60 to-transparent pointer-events-none">
+                      <div className="absolute bottom-0 left-0 w-full p-4 text-white bg-gradient-to-t from-black/60 to-transparent pointer-events-none" onClick={(e) => e.stopPropagation()}>
                         <div className="pointer-events-auto relative">
                           <div className="flex items-center justify-between">
                             <Link
@@ -713,7 +749,6 @@ export default function Discover() {
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
           }
         }
       `}</style>
