@@ -559,35 +559,33 @@ export default function Discover() {
               return (
                 <div
                   key={c.id}
-                  className="rounded-xl overflow-hidden shadow-lg bg-jelly-bean border border-gray-200 relative"
+                  className="rounded-lg overflow-hidden shadow-md bg-jelly-bean border border-gray-200 relative w-full h-auto sm:h-48 md:h-56 lg:h-64 flex flex-col"
                   style={{ backgroundColor: "#005a6f" }}
                 >
-                  {/* Informations de l'utilisateur avec image de profil */}
-                  <div className="p-3 text-white flex items-center gap-3" style={{ backgroundColor: "#005a6f" }}>
-                  <Link href={`/profil/${c.userName}`} className="flex flex-col"><div className="w-10 h-10 bg-gray-600 rounded-full" /></Link>
+                  {/* Section utilisateur */}
+                  <div className="p-4 flex items-center space-x-4 bg-transparent">
+                    <Link href={`/profil/${c.userName}`}>
+                      <div className="w-10 h-10 bg-gray-600 rounded-full flex-shrink-0" />
+                    </Link>
                     <Link href={`/profil/${c.userName}`} className="flex flex-col">
-                      <span className="font-semibold text-sm">{c.name}</span>
-                      <span className="text-xs text-gray-300">{c.profession}</span>
+                      <span className="font-semibold text-sm sm:text-base text-white">{c.name}</span>
+                      <span className="text-xs sm:text-sm text-white">{c.profession}</span>
                     </Link>
                   </div>
-
-                  {/* Vérification de l'URL Spotify pour éviter les erreurs */}
-                  {c.spotifyEmbedUrl.includes("open.spotify.com/embed") ? (
-                    <iframe
-                      style={{ borderRadius: "12px", backgroundColor: "#005a6f" }}
-                      src={c.spotifyEmbedUrl}
-                      width="100%"
-                      height="152"
-                      frameBorder="0"
-                      allowFullScreen
-                      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                      loading="lazy"
-                    ></iframe>
-                  ) : (
-                    <div className="p-4 text-center text-red-500">
-                      <p>Épisode non disponible</p>
-                    </div>
-                  )}
+        
+                  {/* Iframe Spotify */}
+                  <div className="flex-grow iframe-container">
+                    {c.spotifyEmbedUrl.includes("open.spotify.com/embed") ? (
+                      <iframe
+                        className="w-full h-full border-0"
+                        src={c.spotifyEmbedUrl}
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"
+                        allowFullScreen
+                        title={`Podcast de ${c.name}`}
+                      ></iframe>
+                    ) : null}
+                  </div>
                 </div>
               );
             } else {
@@ -780,6 +778,40 @@ export default function Discover() {
             height: 100%;
           }
         }
+
+          @media screen and (max-width: 767px) {
+    .iframe-container {
+      position: relative;
+      padding-bottom: 100%; /* Ratio 1:1 pour mobile */
+      height: 0;
+      overflow: hidden;
+    }
+
+    .iframe-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    .iframe-container {
+      position: relative;
+      padding-bottom: 56.25%; /* Ratio 16:9 pour desktop */
+      height: 0;
+      overflow: hidden;
+    }
+
+    .iframe-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
       `}</style>
     </>
   );
