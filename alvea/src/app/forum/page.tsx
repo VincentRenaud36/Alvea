@@ -65,7 +65,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer isLoggedIn={isLoggedIn} />
     </div>
   );
 }

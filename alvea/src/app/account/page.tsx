@@ -55,8 +55,8 @@ export default function Home() {
                     </div>
                         <div className=''>
                             <h3 className='text-2xl font-semibold'>Présentation</h3>
-                            <p>Je m’appelle Robert Dubois, j’ai 47 ans, et je suis responsable de magasin au Comptoir de Mathilde, une enseigne spécialisée dans les gourmandises artisanales. Mon rôle consiste à gérer l’ensemble des opérations du magasin : de l’organisation des équipes à la gestion des stocks, en passant par l’accueil et le conseil auprès des clients.
-                                Je veille également à ce que nos produits, comme les chocolats, confiseries et autres délices, soient mis en valeur pour offrir une expérience unique à chaque visiteur. Ce métier me passionne parce qu’il allie le contact humain, la gestion et l’amour des produits authentiques.</p>
+                            <p>Je m&apos;appelle Robert Dubois, j&apos;ai 47 ans, et je suis responsable de magasin au Comptoir de Mathilde, une enseigne spécialisée dans les gourmandises artisanales. Mon rôle consiste à gérer l&apos;ensemble des opérations du magasin : de l&apos;organisation des équipes à la gestion des stocks, en passant par l&apos;accueil et le conseil auprès des clients.
+                                Je veille également à ce que nos produits, comme les chocolats, confiseries et autres délices, soient mis en valeur pour offrir une expérience unique à chaque visiteur. Ce métier me passionne parce qu&apos;il allie le contact humain, la gestion et l&apos;amour des produits authentiques.</p>
                         </div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@ export default function Home() {
                         <p className='text-xl font-semibold'>Le Comptoir de Mathilde, Toulon</p>
                         <p className='font-semibold text-[#141F2F] opacity-80'>Responsable de magasin</p>
                         <p className='text-gray-400 -mt-1 text-sm'>Septembre 2015 - Présent</p>
-                        <p className='mt-2 font-medium'>En tant que responsable, je supervise une équipe de six personnes, gère les approvisionnements, organise les plannings et veille à l’atteinte des objectifs de vente. Mon rôle inclut également la mise en place de stratégies pour améliorer l’expérience client, en valorisant les produits locaux et artisanaux qui font la renommée de l’enseigne.</p>
+                        <p className='mt-2 font-medium'>En tant que responsable, je supervise une équipe de six personnes, gère les approvisionnements, organise les plannings et veille à l&apos;atteinte des objectifs de vente. Mon rôle inclut également la mise en place de stratégies pour améliorer l&apos;expérience client, en valorisant les produits locaux et artisanaux qui font la renommée de l&apos;enseigne.</p>
                     </div>
                 </div>
                 <div className='mt-20'>

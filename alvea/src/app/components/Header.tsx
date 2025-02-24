@@ -97,7 +97,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
                 href="/signup"
                 className="bg-white text-jelly-bean px-4 py-2 rounded font-bold hover:bg-white"
               >
-                S'inscrire
+                S&apos;inscrire
               </Link>
               <Link
                 href="/login"
@@ -169,7 +169,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
                   onClick={() => setMenuOpen(false)}
                   className="bg-white text-jelly-bean px-4 py-2 rounded font-bold hover:bg-white"
                 >
-                  S'inscrire
+                  S&apos;inscrire
                 </Link>
                 <Link
                   href="/login"

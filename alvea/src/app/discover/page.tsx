@@ -216,9 +216,7 @@ const allContents: Content[] = [
 
 export default function Discover() {
   /** Sélection "Vidéo" ou "Podcast" */
-  const [selectedType, setSelectedType] = useState<"video" | "podcast">(
-    "video"
-  );
+  const [selectedType, setSelectedType] = useState<"video" | "podcast">("video");
 
   /** Stockage des filtres (cochés/décochés) */
   const [filtersState, setFiltersState] = useState<FilterState>({});
@@ -239,16 +237,11 @@ export default function Discover() {
   /** Pour éviter un scroll multiple */
   const [scrollLock, setScrollLock] = useState(false);
 
-  /** “Plus/Moins” description dans le modal */
+  /** "Plus/Moins" description dans le modal */
   const [descExpanded, setDescExpanded] = useState(false);
 
   /** État pour stocker l'état du lecteur YouTube */
-  const [playerState, setPlayerState] = useState<number | null>(null);
-
-  /** Référence pour conserver la dernière valeur de playerState */
   const playerStateRef = useRef<number | null>(null);
-
-  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // Désactive le scroll de la page en background
   useEffect(() => {
@@ -271,34 +264,28 @@ export default function Discover() {
     if (!activeIframe) return;
 
     const handlePlayerStateChange = (event: MessageEvent) => {
-      console.log("Received message:", event.data); // Log brut des messages reçus
+      console.log("Received message:", event.data);
       try {
-        const data = event.data; // Utilisez directement event.data sans JSON.parse
-        console.log("YouTube Event Data:", data); // Log des données reçues
+        const data = event.data;
+        console.log("YouTube Event Data:", data);
 
-        // Vérifie qu'on écoute bien l'iframe sélectionnée
         if (data.event === "onStateChange") {
-          setPlayerState(data.data); // Met à jour l'état
-          playerStateRef.current = data.data; // Met à jour la référence
+          playerStateRef.current = data.data;
 
           if (data.data === 0) {
-            // Vidéo terminée
             console.log("Video ended. Attempting to replay...");
             activeIframe.contentWindow?.postMessage(
               JSON.stringify({
                 event: "command",
                 func: "seekTo",
-                args: [0, true], // Revenir au début de la vidéo
+                args: [0, true],
               }),
-              "https://www.youtube.com" // Spécifiez l'origine pour des raisons de sécurité
+              "https://www.youtube.com"
             );
           }
         }
       } catch (error) {
-        console.error(
-          "Error processing YouTube event data:",
-          error
-        ); // Log des erreurs de parsing
+        console.error("Error processing YouTube event data:", error);
       }
     };
 
@@ -340,7 +327,7 @@ export default function Discover() {
     };
   }, [selectedIndex]);
 
-  /** Gère l’alternance "vidéo" / "podcast" */
+  /** Gère l'alternance "vidéo" / "podcast" */
   const handleTypeChange = (type: "video" | "podcast") => {
     setSelectedType(type);
     setSelectedIndex(null); // Ferme le modal si on en avait un
@@ -433,7 +420,7 @@ export default function Discover() {
     touchStartRef.current = null;
   };
 
-  /** Toggle la description “Plus/Moins” */
+  /** Toggle la description "Plus/Moins" */
   const toggleDescription = () => setDescExpanded((p) => !p);
 
   /** Partager item */
@@ -724,7 +711,7 @@ export default function Discover() {
         </div>
       )}
 
-      {/* CSS => “décalage” pour masquer le top info YouTube */}
+      {/* CSS => "décalage" pour masquer le top info YouTube */}
       <style jsx global>{`
         /* Animation de slide-in */
         @keyframes slideIn {

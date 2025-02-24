@@ -9,8 +9,6 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ isLoggedIn }) => {
-  const jellyBeanColor = "#1F7A93"; // Couleur Jelly-Bean
-
   return (
     <footer className="bg-white text-[#6F6C90] py-8">
       <div className="container mx-auto px-4 lg:px-8">
