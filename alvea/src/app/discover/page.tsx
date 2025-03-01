@@ -454,6 +454,7 @@ export default function Discover() {
       <div className="container mx-auto px-4 py-8 flex gap-8">
         {/* Sidebar */}
         <div className="w-1/4 hidden md:block">
+<<<<<<< Updated upstream
           <h3 className="font-bold text-lg mb-4 text-primary">
             Filtrer
           </h3>
@@ -485,6 +486,12 @@ export default function Discover() {
           {/* Autres filtres */}
           {filterCategories.map((cat) => (
             <div key={cat.category} className="mb-4">
+=======
+          <h3 className="font-bold mb-4 text-primary text-jelly-bean text-2xl">Filtrer</h3>
+          <hr className="mb-3" />
+          {filters.map(({ category, options }) => (
+            <div key={category} className="mb-4">
+>>>>>>> Stashed changes
               <h4
                 className="font-semibold mb-2 flex justify-between cursor-pointer"
                 onClick={() => toggleCat(cat.category)}

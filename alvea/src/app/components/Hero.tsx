@@ -13,7 +13,11 @@ export default function Hero() {
             <span className="text-jelly-bean bg-white">Explorez</span>
             <span> votre </span>
             <span className="text-jelly-bean bg-white">avenir</span>
+<<<<<<< Updated upstream
             <span> avec ceux qui l&apos;ont déjà </span>
+=======
+            <span className=""> avec ceux qui l&apos;ont déjà </span>
+>>>>>>> Stashed changes
             <span className="text-jelly-bean bg-white">construit</span>
           </h1>
           <Link href="/discover">

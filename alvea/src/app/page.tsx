@@ -4,6 +4,7 @@ import Hero from "./components/Hero";
 import Carousel from "./components/Carousel";
 import Explanation from "./components/Explanation";
 import VideoPodcast from "./components/VideoPodcast";
+// import BrandCarousel from "./components/BrandCarousel";
 
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
       <Carousel />
       <Explanation />
       <VideoPodcast />
+      {/* <BrandCarousel /> */}
       <Footer isLoggedIn={isLoggedIn} />
     </div>
   );

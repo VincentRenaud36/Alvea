@@ -65,7 +65,11 @@ export default function Home() {
           </div>
         </div>
       </div>
+<<<<<<< Updated upstream
       <Footer isLoggedIn={isLoggedIn} />
+=======
+      <Footer isLoggedIn={isLoggedIn}/>
+>>>>>>> Stashed changes
     </div>
   );
 }

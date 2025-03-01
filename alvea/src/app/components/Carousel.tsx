@@ -2,8 +2,18 @@
 
 import Image from "next/image";
 import React from "react";
+import { useQuery } from '@apollo/client';
+import { GET_DATA } from '@/lib/queries';
 
 export default function Carousel() {
+
+    const { loading, error, data } = useQuery(GET_DATA);
+
+    if (loading) return <p>Chargement...</p>;
+    if (error) return <p>Erreur : {error.message}</p>;
+
+console.log(data);
+
   const mentors = [
     { id: 1, name: "Annette Black", role: "Dog Trainer", image: "/Images/imageprofil.png" },
     { id: 2, name: "Robert Green", role: "Life Coach", image: "/Images/imageprofil.png" },

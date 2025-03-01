@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Raleway } from "next/font/google";
 import "./globals.css";
+import Providers from "./components/Providers";
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -19,12 +20,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${raleway.variable} font-sans antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+      <html lang="en">
+        <body
+          className={`${raleway.variable} font-sans antialiased`}
+        >
+          <Providers>
+            {children}
+          </Providers>
+        </body>
+      </html>
   );
 }
