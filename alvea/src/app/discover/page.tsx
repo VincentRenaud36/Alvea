@@ -516,7 +516,7 @@ export default function Discover() {
                     src={thumbUrl}
                     alt={c.name}
                     fill
-                    className="object-cover object-center"
+                    className="object-cover object-center transform scale-125"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     priority
                   />
