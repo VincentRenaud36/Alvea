@@ -4,6 +4,7 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Link from 'next/link';
 
 
 export default function Home() {
@@ -31,7 +32,9 @@ export default function Home() {
                             <p>Responsable magasin</p>
                         </div>
                     </div>
-                    <button className='bg-bittersweet text-white px-5 py-2 rounded-full text-md font-semibold'>Contacter</button>
+                    <Link href="/messagerie">
+                        <button className='bg-bittersweet text-white px-5 py-2 rounded-full text-md font-semibold'>Contacter</button>
+                    </Link>
                 </div>
                 <div>
                     <h2 className='relative text-[1.5rem] font-semibold inline-block'>

@@ -3,7 +3,8 @@
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { useEffect, useRef, useState } from "react";
-import { Mic, MicOff, Video, VideoOff } from "lucide-react";
+import { Mic, MicOff, Video, VideoOff, X } from "lucide-react";
+import Link from "next/link";
 
 export default function ConferencePage() {
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
@@ -144,6 +145,15 @@ export default function ConferencePage() {
         >
           {isVideoOn ? <Video /> : <VideoOff />}
         </Button>
+        <Link href="/messagerie">
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full h-12 w-12 bg-black hover:bg-black/80"
+          >
+            <X className="h-6 w-6 text-white" />
+          </Button>
+        </Link>
       </div>
     </div>
   );

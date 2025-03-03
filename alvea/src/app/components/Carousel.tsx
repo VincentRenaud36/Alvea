@@ -2,24 +2,24 @@
 
 import Image from "next/image";
 import React from "react";
-import { useQuery } from '@apollo/client';
-import { GET_DATA } from '@/lib/queries';
+{/*import { useQuery } from '@apollo/client';
+import { GET_DATA } from '@/lib/queries';*/}
 
 export default function Carousel() {
 
-    const { loading, error, data } = useQuery(GET_DATA);
+    {/*const { loading, error, data } = useQuery(GET_DATA);
 
     if (loading) return <p>Chargement...</p>;
     if (error) return <p>Erreur : {error.message}</p>;
 
-console.log(data);
+console.log(data);*/}
 
   const mentors = [
-    { id: 1, name: "Annette Black", role: "Dog Trainer", image: "/Images/imageprofil.png" },
-    { id: 2, name: "Robert Green", role: "Life Coach", image: "/Images/imageprofil.png" },
-    { id: 3, name: "Marie Durant", role: "Business Mentor", image: "/Images/imageprofil.png" },
-    { id: 4, name: "John Smith", role: "Career Advisor", image: "/Images/imageprofil.png" },
-    { id: 5, name: "Sophie Martin", role: "Tech Mentor", image: "/Images/imageprofil.png" },
+    { id: 1, name: "Annette Black", role: "Dog Trainer", image: "/Images/1.PNG" },
+    { id: 2, name: "Robert Green", role: "Life Coach", image: "/Images/2.PNG" },
+    { id: 3, name: "Marie Durant", role: "Business Mentor", image: "/Images/3.PNG" },
+    { id: 4, name: "John Smith", role: "Career Advisor", image: "/Images/4.PNG" },
+    { id: 5, name: "Sophie Martin", role: "Tech Mentor", image: "/Images/5.PNG" },
   ];
 
   return (
@@ -28,11 +28,8 @@ console.log(data);
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
           Pourquoi se limiter à un <span className="bg-acquamarine px-2">seul mentor</span> quand vous en avez des <span className="bg-texas-rose px-2">centaines</span>
         </h2>
-        <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-          Lorem ipsum dolor sit amet consectetur. Aliquam tellus maecenas sit libero mauris mauris pellentesque ut. Gravida vestibulum.
-        </p>
       </div>
-      <div className="w-full px-4 flex justify-center">
+      <div className="w-full mt-4 px-4 flex justify-center">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-start">
           {mentors.map((mentor, index) => (
             <div
