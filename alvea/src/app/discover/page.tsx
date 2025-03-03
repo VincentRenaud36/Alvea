@@ -77,7 +77,7 @@ const allContents: Content[] = [
     youtubeId: "AFFGRUhf9GI",
     userName: "Jean Lambert",
     userJob: "Vendeur de marron ↗",
-    userDescription: ".",
+    userDescription: "Salut, c’est Jean ! Depuis mon enfance, chaque récolte de marrons m’a appris l’art des traditions et du savoir-faire. Viens découvrir mes expériences authentiques sur le terrain.",
     image: "/Images/1.PNG"
   },
   {
@@ -88,7 +88,7 @@ const allContents: Content[] = [
     youtubeId: "PXtiIVKBieA",
     userName: "Camille Moreau",
     userJob: "Couturière ↗",
-    userDescription: "",
+    userDescription: "Hello, je suis Camille ! Dans mon atelier, chaque fil raconte une histoire. Je te partage mes débuts, mes défis et ces moments magiques qui ont forgé ma passion pour la couture.",
     image: "/Images/2.PNG"
   },
   {
@@ -99,7 +99,7 @@ const allContents: Content[] = [
     youtubeId: "Ogh9zAfz6hE",
     userName: "Ismaël Laurens",
     userJob: "Libraire ↗",
-    userDescription: "",
+    userDescription: "Salut, moi c’est Ismaël ! Depuis l’ouverture de ma librairie, chaque livre m’a offert une leçon de vie. Je te raconte mes rencontres, mes coups de cœur et l’aventure du monde littéraire.",
     image: "/Images/3.PNG"
   },
   {
@@ -110,7 +110,7 @@ const allContents: Content[] = [
     youtubeId: "BX2Uherloaw",
     userName: "Bernard Alban",
     userJob: "Vendeur ↗",
-    userDescription: "",
+    userDescription: "Hey, je suis Bernard ! Fort de nombreuses années sur le terrain, je te partage mes expériences de vendeur : des challenges quotidiens aux rencontres marquantes qui ont façonné mon métier.",
     image: "/Images/4.PNG"
   },
   {
@@ -121,7 +121,7 @@ const allContents: Content[] = [
     youtubeId: "D17H_8Y1TEg",
     userName: "Jeanne Alliot",
     userJob: "Couturière ↗",
-    userDescription: "",
+    userDescription: "Bonjour, je suis Jeanne ! Chaque point de couture est une aventure. Dans mes vidéos, je te fais découvrir mes expériences, de mes premiers essais aux projets qui ont changé ma vie.",
     image: "/Images/5.PNG"
   },
   {
@@ -132,10 +132,9 @@ const allContents: Content[] = [
     youtubeId: "8-N7GCJ7iT4",
     userName: "Arthur Fisher",
     userJob: "Chocolatier ↗",
-    userDescription: "",
+    userDescription: "Salut, ici Arthur ! Ma passion pour le chocolat s’est forgée au fil des années. Je te raconte mon parcours, des premiers chocolats artisanaux aux techniques affinées par l’expérience.",
     image: "/Images/6-1.PNG"
   },
-
   {
     id: 11,
     type: "video",
@@ -144,7 +143,7 @@ const allContents: Content[] = [
     youtubeId: "IfVsIMaMvDU",
     userName: "Pierre Stone",
     userJob: "Barista ↗",
-    userDescription: "",
+    userDescription: "Hey, c’est Pierre ! Chaque tasse de café recèle une histoire. Je partage avec toi mes expériences derrière le comptoir, depuis mes débuts jusqu’à l’art du café parfait.",
     image: "/Images/7-1.PNG"
   },
 
@@ -509,15 +508,16 @@ export default function Discover() {
             return (
               <div
                 key={c.id}
-                className="cursor-pointer rounded-xl overflow-hidden shadow-lg"
+                className="cursor-pointer rounded-xl overflow-hidden shadow-lg h-[500px]"
                 onClick={() => openModal(i)}
               >
-                <div className="aspect-[9/16] relative w-full">
+                <div className="h-full relative w-full">
                   <Image
                     src={thumbUrl}
                     alt={c.name}
                     fill
                     className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
                   <div className="absolute bottom-2 left-2 text-white">
