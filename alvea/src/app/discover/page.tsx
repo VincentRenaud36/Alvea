@@ -77,7 +77,7 @@ const allContents: Content[] = [
     youtubeId: "AFFGRUhf9GI",
     userName: "Jean Lambert",
     userJob: "Vendeur de marron ↗",
-    userDescription: "Salut, c’est Jean ! Depuis mon enfance, chaque récolte de marrons m’a appris l’art des traditions et du savoir-faire. Viens découvrir mes expériences authentiques sur le terrain.",
+    userDescription: "Salut, c'est Jean ! Depuis mon enfance, chaque récolte de marrons m'a appris l'art des traditions et du savoir-faire. Viens découvrir mes expériences authentiques sur le terrain.",
     image: "/Images/1.PNG"
   },
   {
@@ -99,7 +99,7 @@ const allContents: Content[] = [
     youtubeId: "Ogh9zAfz6hE",
     userName: "Ismaël Laurens",
     userJob: "Libraire ↗",
-    userDescription: "Salut, moi c’est Ismaël ! Depuis l’ouverture de ma librairie, chaque livre m’a offert une leçon de vie. Je te raconte mes rencontres, mes coups de cœur et l’aventure du monde littéraire.",
+    userDescription: "Salut, moi c'est Ismaël ! Depuis l'ouverture de ma librairie, chaque livre m'a offert une leçon de vie. Je te raconte mes rencontres, mes coups de cœur et l'aventure du monde littéraire.",
     image: "/Images/3.PNG"
   },
   {
@@ -132,7 +132,7 @@ const allContents: Content[] = [
     youtubeId: "8-N7GCJ7iT4",
     userName: "Arthur Fisher",
     userJob: "Chocolatier ↗",
-    userDescription: "Salut, ici Arthur ! Ma passion pour le chocolat s’est forgée au fil des années. Je te raconte mon parcours, des premiers chocolats artisanaux aux techniques affinées par l’expérience.",
+    userDescription: "Salut, ici Arthur ! Ma passion pour le chocolat s'est forgée au fil des années. Je te raconte mon parcours, des premiers chocolats artisanaux aux techniques affinées par l'expérience.",
     image: "/Images/6-1.PNG"
   },
   {
@@ -143,7 +143,7 @@ const allContents: Content[] = [
     youtubeId: "IfVsIMaMvDU",
     userName: "Pierre Stone",
     userJob: "Barista ↗",
-    userDescription: "Hey, c’est Pierre ! Chaque tasse de café recèle une histoire. Je partage avec toi mes expériences derrière le comptoir, depuis mes débuts jusqu’à l’art du café parfait.",
+    userDescription: "Hey, c'est Pierre ! Chaque tasse de café recèle une histoire. Je partage avec toi mes expériences derrière le comptoir, depuis mes débuts jusqu'à l'art du café parfait.",
     image: "/Images/7-1.PNG"
   },
 
@@ -508,16 +508,17 @@ export default function Discover() {
             return (
               <div
                 key={c.id}
-                className="cursor-pointer rounded-xl overflow-hidden shadow-lg h-[500px]"
+                className="cursor-pointer rounded-xl overflow-hidden shadow-lg"
                 onClick={() => openModal(i)}
               >
-                <div className="h-full relative w-full">
+                <div className="aspect-[9/16] relative w-full">
                   <Image
                     src={thumbUrl}
                     alt={c.name}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
                   <div className="absolute bottom-2 left-2 text-white">
