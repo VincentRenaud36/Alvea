@@ -78,6 +78,7 @@ const allContents: Content[] = [
     userName: "Jean Lambert",
     userJob: "Vendeur de marron ↗",
     userDescription: ".",
+    image: "/Images/1.PNG"
   },
   {
     id: 2,
@@ -88,6 +89,7 @@ const allContents: Content[] = [
     userName: "Camille Moreau",
     userJob: "Couturière ↗",
     userDescription: "",
+    image: "/Images/2.PNG"
   },
   {
     id: 4,
@@ -98,6 +100,7 @@ const allContents: Content[] = [
     userName: "Ismaël Laurens",
     userJob: "Libraire ↗",
     userDescription: "",
+    image: "/Images/3.PNG"
   },
   {
     id: 5,
@@ -108,6 +111,7 @@ const allContents: Content[] = [
     userName: "Bernard Alban",
     userJob: "Vendeur ↗",
     userDescription: "",
+    image: "/Images/4.PNG"
   },
   {
     id: 6,
@@ -118,6 +122,7 @@ const allContents: Content[] = [
     userName: "Jeanne Alliot",
     userJob: "Couturière ↗",
     userDescription: "",
+    image: "/Images/5.PNG"
   },
   {
     id: 8,
@@ -128,6 +133,7 @@ const allContents: Content[] = [
     userName: "Arthur Fisher",
     userJob: "Chocolatier ↗",
     userDescription: "",
+    image: "/Images/6-1.PNG"
   },
 
   {
@@ -139,6 +145,7 @@ const allContents: Content[] = [
     userName: "Pierre Stone",
     userJob: "Barista ↗",
     userDescription: "",
+    image: "/Images/7-1.PNG"
   },
 
   // Podcasts existants
@@ -515,7 +522,14 @@ export default function Discover() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
                   <div className="absolute bottom-2 left-2 text-white">
                     <Link href={`/profil/${c.userName}`} className="flex items-center space-x-2">
-                      <div className="w-10 h-10 bg-gray-600 rounded-full flex-shrink-0" />
+                      <div className="w-10 h-10 rounded-full flex-shrink-0 relative overflow-hidden">
+                        <Image
+                          src={c.image || "/Images/default-profile.png"}
+                          alt={`Photo de profil de ${c.name}`}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
                       <div>
                         <p className="font-semibold">{c.name}</p>
                         <p className="text-sm">{c.profession}</p>
@@ -634,7 +648,14 @@ export default function Discover() {
                               href={`/profil/${elem.userName}`}
                               className="flex items-center gap-2 no-underline"
                             >
-                              <div className="w-10 h-10 bg-gray-500 rounded-full" />
+                              <div className="w-10 h-10 rounded-full relative overflow-hidden">
+                                <Image
+                                  src={elem.image || "/Images/default-profile.png"}
+                                  alt={`Photo de profil de ${elem.userName}`}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
                               <div className="flex flex-col text-sm no-underline">
                                 <span className="font-semibold no-underline">
                                   {elem.userName}
