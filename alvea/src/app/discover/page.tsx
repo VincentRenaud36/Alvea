@@ -6,6 +6,56 @@ import Link from "next/link";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
+// À ajouter après vos imports (ex. ligne 10)
+
+function VideoThumbnail({ thumbUrl, alt }: { thumbUrl: string; alt: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  const [imageUrl, setImageUrl] = useState(thumbUrl);
+
+  useEffect(() => {
+    // Vérifie si l'image HD existe
+    fetch(thumbUrl)
+      .then(response => {
+        if (!response.ok) {
+          // Si l'image HD n'existe pas, utilise la version standard
+          setImageUrl(thumbUrl.replace('maxresdefault', 'hqdefault'));
+        }
+      })
+      .catch(() => {
+        // En cas d'erreur, utilise la version standard
+        setImageUrl(thumbUrl.replace('maxresdefault', 'hqdefault'));
+      });
+  }, [thumbUrl]);
+
+  return (
+    <div 
+      ref={containerRef}
+      className="aspect-[9/16] relative w-full overflow-hidden"
+    >
+      <Image
+        src={imageUrl}
+        alt={alt}
+        fill
+        className="object-cover object-center"
+        style={{ transform: `scale(${scale})` }}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        quality={90}
+        onLoadingComplete={({ naturalWidth, naturalHeight }) => {
+          const container = containerRef.current;
+          if (!container) return;
+          const scaleX = container.offsetWidth / naturalWidth;
+          const scaleY = container.offsetHeight / naturalHeight;
+          const scaleNeeded = Math.max(scaleX, scaleY);
+          setScale(scaleNeeded < 1 ? 1 : scaleNeeded);
+        }}
+        priority
+      />
+    </div>
+  );
+}
+
+
 /** Types de données */
 interface FilterCategory {
   category: string;
@@ -72,146 +122,142 @@ const allContents: Content[] = [
   {
     id: 1,
     type: "video",
-    name: "Sophie Lambert",
-    profession: "Responsable RH",
-    youtubeId: "c6u-I85peig",
-    userName: "Sophie Lambert",
-    userJob: "Responsable RH ↗",
-    userDescription:
-      "Pellentesque nec ullamcorper odio. Lorem ipsum.Pellentesque nec ullamcorper odio. Lorem ipsum.Pellentesque nec ullamcorper odio. Lorem ipsum.Pellentesque nec ullamcorper odio. Lorem ipsum.",
+    name: "Jean Lambert",
+    profession: "Vendeur de marron",
+    youtubeId: "AFFGRUhf9GI",
+    userName: "Jean Lambert",
+    userJob: "Vendeur de marron ↗",
+    userDescription: "Salut, c'est Jean ! Depuis mon enfance, chaque récolte de marrons m'a appris l'art des traditions et du savoir-faire. Viens découvrir mes expériences authentiques sur le terrain.",
+    image: "/Images/1.PNG"
   },
   {
     id: 2,
     type: "video",
     name: "Camille Moreau",
     profession: "Couturière",
-    youtubeId: "cBGq5yUoABA",
+    youtubeId: "PXtiIVKBieA",
     userName: "Camille Moreau",
     userJob: "Couturière ↗",
-    userDescription: "Praesent aliquam ipsum lectus, non condimentum nulla.",
+    userDescription: "Hello, je suis Camille ! Dans mon atelier, chaque fil raconte une histoire. Je te partage mes débuts, mes défis et ces moments magiques qui ont forgé ma passion pour la couture.",
+    image: "/Images/2.PNG"
   },
   {
     id: 4,
     type: "video",
     name: "Ismaël Laurens",
-    profession: "Avocat",
-    youtubeId: "lj_ruhHncWA",
+    profession: "Libraire",
+    youtubeId: "Ogh9zAfz6hE",
     userName: "Ismaël Laurens",
-    userJob: "Avocat ↗",
-    userDescription: "Suspendisse porttitor massa sed condimentum fringilla.",
+    userJob: "Libraire ↗",
+    userDescription: "Salut, moi c'est Ismaël ! Depuis l'ouverture de ma librairie, chaque livre m'a offert une leçon de vie. Je te raconte mes rencontres, mes coups de cœur et l'aventure du monde littéraire.",
+    image: "/Images/3.PNG"
   },
   {
     id: 5,
     type: "video",
     name: "Bernard Alban",
-    profession: "Technicien Photovoltaïque",
-    youtubeId: "ffY_I21gK1s",
+    profession: "Vendeur",
+    youtubeId: "BX2Uherloaw",
     userName: "Bernard Alban",
-    userJob: "Technicien ↗",
-    userDescription: "Sed finibus augue sed odio accumsan.",
+    userJob: "Vendeur ↗",
+    userDescription: "Hey, je suis Bernard ! Fort de nombreuses années sur le terrain, je te partage mes expériences de vendeur : des challenges quotidiens aux rencontres marquantes qui ont façonné mon métier.",
+    image: "/Images/4.PNG"
   },
   {
     id: 6,
     type: "video",
-    name: "Benoit Alliot",
-    profession: "Médecin",
-    youtubeId: "7dXcPSspMrk",
-    userName: "Benoit Alliot",
-    userJob: "Médecin ↗",
-    userDescription: "Nunc ornare dui quis risus ornare.",
+    name: "Jeanne Alliot",
+    profession: "Couturière",
+    youtubeId: "D17H_8Y1TEg",
+    userName: "Jeanne Alliot",
+    userJob: "Couturière ↗",
+    userDescription: "Bonjour, je suis Jeanne ! Chaque point de couture est une aventure. Dans mes vidéos, je te fais découvrir mes expériences, de mes premiers essais aux projets qui ont changé ma vie.",
+    image: "/Images/5.PNG"
   },
   {
     id: 8,
     type: "video",
     name: "Arthur Fisher",
-    profession: "Informaticien",
-    youtubeId: "QrxMuXALM7Y",
+    profession: "Chocolatier",
+    youtubeId: "8-N7GCJ7iT4",
     userName: "Arthur Fisher",
-    userJob: "Informaticien ↗",
-    userDescription: "Phasellus ultrices magna quis nisi tristique.",
-  },
-  {
-    id: 9,
-    type: "video",
-    name: "Robert Dubois",
-    profession: "Responsable magasin",
-    youtubeId: "9ps8QpVxinI",
-    userName: "Robert Dubois",
-    userJob: "Responsable magasin",
-    userDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    userJob: "Chocolatier ↗",
+    userDescription: "Salut, ici Arthur ! Ma passion pour le chocolat s'est forgée au fil des années. Je te raconte mon parcours, des premiers chocolats artisanaux aux techniques affinées par l'expérience.",
+    image: "/Images/6-1.PNG"
   },
   {
     id: 11,
     type: "video",
-    name: "Emma Stone",
-    profession: "Architecte",
-    youtubeId: "VmEw3fccDtQ",
-    userName: "Emma Stone",
-    userJob: "Architecte ↗",
-    userDescription: "Fusce et turpis vitae quam ultricies varius.",
-  },
-  {
-    id: 12,
-    type: "video",
-    name: "Britany Cooper",
-    profession: "Tatoueuse",
-    youtubeId: "2gGaCG30szE",
-    userName: "Britany Cooper",
-    userJob: "Tatoueuse ↗",
-    userDescription: "Quisque facilisis pharetra massa.",
+    name: "Pierre Stone",
+    profession: "Barista",
+    youtubeId: "IfVsIMaMvDU",
+    userName: "Pierre Stone",
+    userJob: "Barista ↗",
+    userDescription: "Hey, c'est Pierre ! Chaque tasse de café recèle une histoire. Je partage avec toi mes expériences derrière le comptoir, depuis mes débuts jusqu'à l'art du café parfait.",
+    image: "/Images/7-1.PNG"
   },
 
   // Podcasts existants
   {
     id: 3,
     type: "podcast",
-    name: "Mickael Schmidt",
-    profession: "Kinésithérapeute",
-    userName: "Mickael Schmidt",
-    userJob: "Kinésithérapeute ↗",
-    userDescription: "Podcast sur la rééducation sportive.",
-    image: "/Images/podcast1.jpg",
+    name: "Jean Lambert",
+    profession: "Vendeur de marron",
+    userName: "Jean Lambert",
+    userJob: "Vendeur de marron ↗",
+    userDescription: "Salut, c'est Jean ! Depuis mon enfance, chaque récolte de marrons m'a appris l'art des traditions et du savoir-faire. Viens découvrir mes expériences authentiques sur le terrain.",
+    image: "/Images/1.PNG",
     spotifyEmbedUrl:
-      "https://open.spotify.com/embed/episode/2VrnOiaym1fDHTpM2KsL7U?utm_source=generator",
+      "https://open.spotify.com/embed/episode/016tVvPbPVsHrUqRyF49O5?utm_source=generator&theme=0",
   },
   {
     id: 7,
     type: "podcast",
-    name: "Theo Legrand",
-    profession: "Architecte",
-    userName: "Theo Legrand",
-    userJob: "Architecte ↗",
-    userDescription: "Deuxième podcast. Lorem ipsum dolor sit amet.",
-    image: "/Images/podcast2.jpg",
+    name: "Camille Moreau",
+    profession: "Couturière",
+    userName: "Camille Moreau",
+    userJob: "Couturière ↗",
+    userDescription: "Hello, je suis Camille ! Dans mon atelier, chaque fil raconte une histoire. Je te partage mes débuts, mes défis et ces moments magiques qui ont forgé ma passion pour la couture.",
+    image: "/Images/2.PNG",
     spotifyEmbedUrl:
-      "https://open.spotify.com/embed/episode/2VrnOiaym1fDHTpM2KsL7U?utm_source=generator",
+      "https://open.spotify.com/embed/episode/28pcOKjAJmhsYGhj7Sw6HT?utm_source=generator&theme=0",
   },
   {
     id: 10,
     type: "podcast",
-    name: "Ronald Richards",
-    profession: "Forgeron",
-    userName: "Ronald Richards",
-    userJob: "Forgeron ↗",
-    userDescription: "Troisième podcast. Sed sed purus et ante dignissim.",
-    image: "/Images/podcast3.jpg",
+    name: "Ismaël Laurens",
+    profession: "Libraire",
+    userName: "Ismaël Laurens",
+    userJob: "Libraire ↗",
+    userDescription: "Salut, moi c'est Ismaël ! Depuis l'ouverture de ma librairie, chaque livre m'a offert une leçon de vie. Je te raconte mes rencontres, mes coups de cœur et l'aventure du monde littéraire.",
+    image: "/Images/3.PNG",
     spotifyEmbedUrl:
-      "https://open.spotify.com/embed/episode/2VrnOiaym1fDHTpM2KsL7U?utm_source=generator",
+      "https://open.spotify.com/embed/episode/53CIzGG9autdyBB4VKyicy?utm_source=generator&theme=0",
   },
-  // Duplication des Podcasts pour atteindre 11 podcasts
-  ...Array.from({ length: 8 }, (_, index) => ({
-    id: 13 + index,
-    type: "podcast" as const,
-    name: "Mickael Schmidt",
-    profession: "Kinésithérapeute", 
-    userName: "Mickael Schmidt",
-    userJob: "Kinésithérapeute ↗",
-    userDescription: "Podcast sur la rééducation sportive.",
-    image: "/Images/podcast1.jpg",
+  {
+    id: 12,
+    type: "podcast",
+    name: "Bernard Alban",
+    profession: "Vendeur",
+    userName: "Bernard Alban",
+    userJob: "Vendeur ↗",
+    userDescription: "Hey, je suis Bernard ! Fort de nombreuses années sur le terrain, je te partage mes expériences de vendeur : des challenges quotidiens aux rencontres marquantes qui ont façonné mon métier.",
+    image: "/Images/4.PNG",
     spotifyEmbedUrl:
-      "https://open.spotify.com/embed/episode/2VrnOiaym1fDHTpM2KsL7U?utm_source=generator",
-  })),
+      "https://open.spotify.com/embed/episode/0I5WLQGUsomP3x4dwmlSB5?utm_source=generator&theme=0",
+  },
+  {
+    id: 13,
+    type: "podcast",
+    name: "Jeanne Alliot",
+    profession: "Couturière",
+    userName: "Jeanne Alliot",
+    userJob: "Couturière ↗",
+    userDescription: "Bonjour, je suis Jeanne ! Chaque point de couture est une aventure. Dans mes vidéos, je te fais découvrir mes expériences, de mes premiers essais aux projets qui ont changé ma vie.",
+    image: "/Images/5.PNG",
+    spotifyEmbedUrl:
+      "https://open.spotify.com/embed/episode/01mUFtIod7caTPLZX93CWE?utm_source=generator&theme=0",
+  }
 ];
 
 export default function Discover() {
@@ -242,6 +288,9 @@ export default function Discover() {
 
   /** État pour stocker l'état du lecteur YouTube */
   const playerStateRef = useRef<number | null>(null);
+
+  /** Mobile filters */
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   // Désactive le scroll de la page en background
   useEffect(() => {
@@ -451,10 +500,100 @@ export default function Discover() {
     <>
       <Header isLoggedIn />
 
+      {/* Bouton filtres mobile */}
+      <button
+        className="fixed bottom-4 right-4 z-50 md:hidden bg-bittersweet text-white p-4 rounded-full shadow-lg"
+        onClick={(e) => {
+          e.stopPropagation();
+          setMobileFiltersOpen(!mobileFiltersOpen);
+        }}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+        </svg>
+      </button>
+
+      {/* Drawer mobile des filtres */}
+      <div 
+        className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 md:hidden ${
+          mobileFiltersOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setMobileFiltersOpen(false)}
+      >
+        <div
+          className={`fixed right-0 top-0 h-full w-80 bg-white p-6 shadow-xl transition-transform duration-300 transform ${
+            mobileFiltersOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-lg font-bold">Filtres</h3>
+            <button
+              className="text-gray-500 hover:text-gray-700"
+              onClick={() => setMobileFiltersOpen(false)}
+            >
+              ✕
+            </button>
+          </div>
+
+          <div className="overflow-y-auto h-full pb-20">
+            <div className="mb-6">
+              <label className="flex items-center gap-2 mb-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="content-type-mobile"
+                  value="video"
+                  checked={selectedType === "video"}
+                  onChange={() => handleTypeChange("video")}
+                />
+                Vidéo courte
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="content-type-mobile"
+                  value="podcast"
+                  checked={selectedType === "podcast"}
+                  onChange={() => handleTypeChange("podcast")}
+                />
+                Podcast
+              </label>
+            </div>
+
+            {filterCategories.map((cat) => (
+              <div key={cat.category} className="mb-4">
+                <h4
+                  className="font-semibold mb-2 flex justify-between cursor-pointer"
+                  onClick={() => toggleCat(cat.category)}
+                >
+                  {cat.category}
+                  <span>{expandedCats[cat.category] ? "▲" : "▼"}</span>
+                </h4>
+                {expandedCats[cat.category] && (
+                  <ul className="space-y-2">
+                    {cat.options.map((option) => (
+                      <li key={option} className="flex items-center gap-2">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={!!filtersState[option]}
+                            onChange={() => toggleFilterOption(option)}
+                          />
+                          {option}
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 py-8 flex gap-8">
-        {/* Sidebar */}
+        {/* Sidebar desktop */}
         <div className="w-1/4 hidden md:block">
-<<<<<<< Updated upstream
           <h3 className="font-bold text-lg mb-4 text-primary">
             Filtrer
           </h3>
@@ -486,12 +625,6 @@ export default function Discover() {
           {/* Autres filtres */}
           {filterCategories.map((cat) => (
             <div key={cat.category} className="mb-4">
-=======
-          <h3 className="font-bold mb-4 text-primary text-jelly-bean text-2xl">Filtrer</h3>
-          <hr className="mb-3" />
-          {filters.map(({ category, options }) => (
-            <div key={category} className="mb-4">
->>>>>>> Stashed changes
               <h4
                 className="font-semibold mb-2 flex justify-between cursor-pointer"
                 onClick={() => toggleCat(cat.category)}
@@ -522,28 +655,34 @@ export default function Discover() {
         </div>
 
         {/* Grille */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full md:w-3/4">
-        {displayedContents.map((c, i) => {
-          if (c.type === "video" && c.youtubeId) {
-            // Carte vidéo => 9:16 miniature
-            const thumbUrl = `https://img.youtube.com/vi/${c.youtubeId}/0.jpg`;
-            return (
-              <div
-                key={c.id}
-                className="cursor-pointer rounded-xl overflow-hidden shadow-lg"
-                onClick={() => openModal(i)}
-              >
-                <div className="aspect-[9/16] relative w-full">
-                  <Image
-                    src={thumbUrl}
-                    alt={c.name}
-                    fill
-                    className="object-cover"
-                  />
+        <div className={`grid gap-4 md:gap-6 w-full md:w-3/4 ${
+          selectedType === 'video' 
+            ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
+            : 'grid-cols-1'
+        }`}>
+          {displayedContents.map((c, i) => {
+            if (c.type === "video" && c.youtubeId) {
+              const thumbUrl = `https://img.youtube.com/vi/${c.youtubeId}/maxresdefault.jpg`;
+              return (
+                <div
+                  key={c.id}
+                  className="cursor-pointer rounded-xl overflow-hidden shadow-lg relative w-full aspect-[9/16]"
+                  onClick={() => openModal(i)}
+                >
+                  <div className="absolute inset-0">
+                    <VideoThumbnail thumbUrl={thumbUrl} alt={c.name} />
+                  </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
                   <div className="absolute bottom-2 left-2 text-white">
                     <Link href={`/profil/${c.userName}`} className="flex items-center space-x-2">
-                      <div className="w-10 h-10 bg-gray-600 rounded-full flex-shrink-0" />
+                      <div className="w-10 h-10 rounded-full flex-shrink-0 relative overflow-hidden">
+                        <Image
+                          src={c.image || "/Images/default-profile.png"}
+                          alt={`Photo de profil de ${c.name}`}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
                       <div>
                         <p className="font-semibold">{c.name}</p>
                         <p className="text-sm">{c.profession}</p>
@@ -551,19 +690,25 @@ export default function Discover() {
                     </Link>
                   </div>
                 </div>
-              </div>
-            );
+              );
             } else if (c.type === "podcast" && c.spotifyEmbedUrl) {
               return (
                 <div
                   key={c.id}
-                  className="rounded-lg overflow-hidden shadow-md bg-jelly-bean border border-gray-200 relative w-full h-auto sm:h-48 md:h-56 lg:h-64 flex flex-col"
-                  style={{ backgroundColor: "#005a6f" }}
+                  className="rounded-lg overflow-hidden shadow-md bg-black border border-gray-200 relative w-full flex flex-col"
+                  style={{ backgroundColor: "#1f1f1f" }}
                 >
                   {/* Section utilisateur */}
                   <div className="p-4 flex items-center space-x-4 bg-transparent">
                     <Link href={`/profil/${c.userName}`}>
-                      <div className="w-10 h-10 bg-gray-600 rounded-full flex-shrink-0" />
+                      <div className="w-10 h-10 rounded-full relative overflow-hidden flex-shrink-0">
+                        <Image
+                          src={c.image || "/Images/default-profile.png"}
+                          alt={`Photo de profil de ${c.name}`}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
                     </Link>
                     <Link href={`/profil/${c.userName}`} className="flex flex-col">
                       <span className="font-semibold text-sm sm:text-base text-white">{c.name}</span>
@@ -572,15 +717,18 @@ export default function Discover() {
                   </div>
         
                   {/* Iframe Spotify */}
-                  <div className="flex-grow iframe-container">
+                  <div className="flex-grow">
                     {c.spotifyEmbedUrl.includes("open.spotify.com/embed") ? (
                       <iframe
-                        className="w-full h-full border-0"
+                        className="w-full h-full min-h-[152px]"
                         src={c.spotifyEmbedUrl}
                         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                         loading="lazy"
                         allowFullScreen
                         title={`Podcast de ${c.name}`}
+                        style={{
+                          backgroundColor: 'jelly-bean'
+                        }}
                       ></iframe>
                     ) : null}
                   </div>
@@ -662,7 +810,14 @@ export default function Discover() {
                               href={`/profil/${elem.userName}`}
                               className="flex items-center gap-2 no-underline"
                             >
-                              <div className="w-10 h-10 bg-gray-500 rounded-full" />
+                              <div className="w-10 h-10 rounded-full relative overflow-hidden">
+                                <Image
+                                  src={elem.image || "/Images/default-profile.png"}
+                                  alt={`Photo de profil de ${elem.userName}`}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
                               <div className="flex flex-col text-sm no-underline">
                                 <span className="font-semibold no-underline">
                                   {elem.userName}
@@ -780,15 +935,11 @@ export default function Discover() {
           @media screen and (max-width: 767px) {
     .iframe-container {
       position: relative;
-      padding-bottom: 100%; /* Ratio 1:1 pour mobile */
-      height: 0;
+      height: 152px;
       overflow: hidden;
     }
 
     .iframe-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
     }
@@ -797,15 +948,11 @@ export default function Discover() {
   @media screen and (min-width: 768px) {
     .iframe-container {
       position: relative;
-      padding-bottom: 56.25%; /* Ratio 16:9 pour desktop */
-      height: 0;
+      height: 152px;
       overflow: hidden;
     }
 
     .iframe-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
     }

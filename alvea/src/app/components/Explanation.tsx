@@ -62,8 +62,8 @@ function Explanation() {
           : "Transmettez votre savoir et inspirez les futurs talents"}
       </h2>
 
-      {/* Spline animée (cachée sur mobile) */}
-      <div className="absolute top-[210px] left-[50%] -translate-x-1/2 w-auto h-auto z-0 hidden sm:block">
+      {/* Spline animée (cachée en dessous de 1000px) */}
+      <div className="absolute top-[210px] left-[50%] -translate-x-1/2 w-auto h-auto z-0 hidden lg:block">
         <Image
           ref={splineRef}
           src="/Images/spline.svg"
@@ -76,6 +76,14 @@ function Explanation() {
           }}
         />
       </div>
+
+      <style jsx global>{`
+        @media (max-width: 1000px) {
+          .spline-container {
+            display: none !important;
+          }
+        }
+      `}</style>
 
       {/* Contenu principal */}
       <div className="relative w-full max-w-5xl flex flex-col items-center z-10">
@@ -99,7 +107,7 @@ function Explanation() {
                   expérimentés. La plateforme met en relation des lycéens et
                   étudiants avec des mentors issus de divers métiers, favorisant
                   les échanges authentiques et intergénérationnels. Ce concept
-                  valorise la transmission de savoirs et l’accompagnement
+                  valorise la transmission de savoirs et l&lsquo;accompagnement
                   personnalisé.
                 </p>
               </div>

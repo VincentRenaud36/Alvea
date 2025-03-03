@@ -7,11 +7,12 @@ import { Input } from "../components/ui/input";
 import { ScrollArea } from "../components/ui/scroll-area";
 import { Separator } from "../components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
-import { MessageSquare, Send, ArrowLeft } from "lucide-react";
+import { MessageSquare, Send, ArrowLeft, Video } from "lucide-react";
 import Link from "next/link";
 import { conversations, currentUser, Conversation, Message, User } from "@/lib/data";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import Header from "../components/Header";
 
 export default function MessagerieApp() {
   const [activeConversation, setActiveConversation] = useState<Conversation | null>(conversations[0]);
@@ -63,9 +64,11 @@ export default function MessagerieApp() {
       return format(date, "d MMM", { locale: fr });
     }
   };
+  const isLoggedIn = true; // Changez à `true` pour l'état connecté
 
   return (
     <div className="flex flex-col h-screen bg-background">
+      <Header isLoggedIn={isLoggedIn} />
       <header className="border-b p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="mr-2">
@@ -75,6 +78,11 @@ export default function MessagerieApp() {
           </Link>
           <h1 className="text-xl font-bold">Messagerie</h1>
         </div>
+        <Link href="/visio">
+          <Button variant="ghost" size="icon" className="rounded-full bg-bittersweet hover:bg-bittersweet/90">
+            <Video className="h-5 w-5 text-white" />
+          </Button>
+        </Link>
       </header>
 
       <div className="flex flex-1 overflow-hidden">
