@@ -511,12 +511,12 @@ export default function Discover() {
                 className="cursor-pointer rounded-xl overflow-hidden shadow-lg"
                 onClick={() => openModal(i)}
               >
-                <div className="aspect-[9/16] relative w-full">
+                <div className="aspect-[9/16] relative w-full overflow-hidden">
                   <Image
                     src={thumbUrl}
                     alt={c.name}
                     fill
-                    className="object-cover"
+                    className="object-cover object-center"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     priority
                   />
