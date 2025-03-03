@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
 
   output: "export", // On utilise la génération statique
 
-  basePath: "/alvea", // On définit le chemin de base
+  basePath: "/Alvea/alvea", // On définit le chemin de base
 
   images: {
     unoptimized: true, // On désactive l'optimisation des images
