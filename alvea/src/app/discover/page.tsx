@@ -72,94 +72,73 @@ const allContents: Content[] = [
   {
     id: 1,
     type: "video",
-    name: "Sophie Lambert",
-    profession: "Responsable RH",
-    youtubeId: "c6u-I85peig",
-    userName: "Sophie Lambert",
-    userJob: "Responsable RH ↗",
-    userDescription:
-      "Pellentesque nec ullamcorper odio. Lorem ipsum.Pellentesque nec ullamcorper odio. Lorem ipsum.Pellentesque nec ullamcorper odio. Lorem ipsum.Pellentesque nec ullamcorper odio. Lorem ipsum.",
+    name: "Jean Lambert",
+    profession: "Vendeur de marron",
+    youtubeId: "AFFGRUhf9GI",
+    userName: "Jean Lambert",
+    userJob: "Vendeur de marron ↗",
+    userDescription: ".",
   },
   {
     id: 2,
     type: "video",
     name: "Camille Moreau",
     profession: "Couturière",
-    youtubeId: "cBGq5yUoABA",
+    youtubeId: "PXtiIVKBieA",
     userName: "Camille Moreau",
     userJob: "Couturière ↗",
-    userDescription: "Praesent aliquam ipsum lectus, non condimentum nulla.",
+    userDescription: "",
   },
   {
     id: 4,
     type: "video",
     name: "Ismaël Laurens",
-    profession: "Avocat",
-    youtubeId: "lj_ruhHncWA",
+    profession: "Libraire",
+    youtubeId: "Ogh9zAfz6hE",
     userName: "Ismaël Laurens",
-    userJob: "Avocat ↗",
-    userDescription: "Suspendisse porttitor massa sed condimentum fringilla.",
+    userJob: "Libraire ↗",
+    userDescription: "",
   },
   {
     id: 5,
     type: "video",
     name: "Bernard Alban",
-    profession: "Technicien Photovoltaïque",
-    youtubeId: "ffY_I21gK1s",
+    profession: "Vendeur",
+    youtubeId: "BX2Uherloaw",
     userName: "Bernard Alban",
-    userJob: "Technicien ↗",
-    userDescription: "Sed finibus augue sed odio accumsan.",
+    userJob: "Vendeur ↗",
+    userDescription: "",
   },
   {
     id: 6,
     type: "video",
-    name: "Benoit Alliot",
-    profession: "Médecin",
-    youtubeId: "7dXcPSspMrk",
-    userName: "Benoit Alliot",
-    userJob: "Médecin ↗",
-    userDescription: "Nunc ornare dui quis risus ornare.",
+    name: "Jeanne Alliot",
+    profession: "Couturière",
+    youtubeId: "D17H_8Y1TEg",
+    userName: "Jeanne Alliot",
+    userJob: "Couturière ↗",
+    userDescription: "",
   },
   {
     id: 8,
     type: "video",
     name: "Arthur Fisher",
-    profession: "Informaticien",
-    youtubeId: "QrxMuXALM7Y",
+    profession: "Chocolatier",
+    youtubeId: "8-N7GCJ7iT4",
     userName: "Arthur Fisher",
-    userJob: "Informaticien ↗",
-    userDescription: "Phasellus ultrices magna quis nisi tristique.",
+    userJob: "Chocolatier ↗",
+    userDescription: "",
   },
-  {
-    id: 9,
-    type: "video",
-    name: "Robert Dubois",
-    profession: "Responsable magasin",
-    youtubeId: "9ps8QpVxinI",
-    userName: "Robert Dubois",
-    userJob: "Responsable magasin",
-    userDescription:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
+
   {
     id: 11,
     type: "video",
-    name: "Emma Stone",
-    profession: "Architecte",
-    youtubeId: "VmEw3fccDtQ",
-    userName: "Emma Stone",
-    userJob: "Architecte ↗",
-    userDescription: "Fusce et turpis vitae quam ultricies varius.",
-  },
-  {
-    id: 12,
-    type: "video",
-    name: "Britany Cooper",
-    profession: "Tatoueuse",
-    youtubeId: "2gGaCG30szE",
-    userName: "Britany Cooper",
-    userJob: "Tatoueuse ↗",
-    userDescription: "Quisque facilisis pharetra massa.",
+    name: "Pierre Stone",
+    profession: "Barista",
+    youtubeId: "IfVsIMaMvDU",
+    userName: "Pierre Stone",
+    userJob: "Barista ↗",
+    userDescription: "",
   },
 
   // Podcasts existants
@@ -454,7 +433,6 @@ export default function Discover() {
       <div className="container mx-auto px-4 py-8 flex gap-8">
         {/* Sidebar */}
         <div className="w-1/4 hidden md:block">
-<<<<<<< Updated upstream
           <h3 className="font-bold text-lg mb-4 text-primary">
             Filtrer
           </h3>
@@ -486,12 +464,6 @@ export default function Discover() {
           {/* Autres filtres */}
           {filterCategories.map((cat) => (
             <div key={cat.category} className="mb-4">
-=======
-          <h3 className="font-bold mb-4 text-primary text-jelly-bean text-2xl">Filtrer</h3>
-          <hr className="mb-3" />
-          {filters.map(({ category, options }) => (
-            <div key={category} className="mb-4">
->>>>>>> Stashed changes
               <h4
                 className="font-semibold mb-2 flex justify-between cursor-pointer"
                 onClick={() => toggleCat(cat.category)}

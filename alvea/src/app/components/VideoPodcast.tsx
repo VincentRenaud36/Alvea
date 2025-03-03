@@ -6,15 +6,15 @@ import Link from 'next/link';
 
 function VideoPodcast() {
     const mentors = [
-        { id: 1, name: "Annette Black", role: "Dog Trainer", image: "/Images/meuf.png" },
-        { id: 2, name: "Robert Green", role: "Life Coach", image: "/Images/meuf.png" },
-        { id: 3, name: "Marie Durant", role: "Business Mentor", image: "/Images/meuf.png" },
-        { id: 4, name: "Marie Durant", role: "Business Mentor", image: "/Images/meuf.png" },
-        { id: 5, name: "Marie Durant", role: "Business Mentor", image: "/Images/meuf.png" },
-        { id: 6, name: "Marie Durant", role: "Business Mentor", image: "/Images/meuf.png" },
-        { id: 7, name: "Marie Durant", role: "Business Mentor", image: "/Images/meuf.png" },
-        { id: 8, name: "Marie Durant", role: "Business Mentor", image: "/Images/meuf.png" },
-        { id: 9, name: "Marie Durant", role: "Business Mentor", image: "/Images/meuf.png" },
+        { id: 1, name: "Annette Black", role: "Dog Trainer", image: "/Images/1.PNG" },
+        { id: 2, name: "Robert Green", role: "Life Coach", image: "/Images/2.PNG" },
+        { id: 3, name: "Marie Durant", role: "Business Mentor", image: "/Images/3.PNG" },
+        { id: 4, name: "Marie Durant", role: "Business Mentor", image: "/Images/4.PNG" },
+        { id: 5, name: "Marie Durant", role: "Business Mentor", image: "/Images/5.PNG" },
+        { id: 6, name: "Marie Durant", role: "Business Mentor", image: "/Images/6-1.PNG" },
+        { id: 7, name: "Marie Durant", role: "Business Mentor", image: "/Images/6-2.PNG" },
+        { id: 8, name: "Marie Durant", role: "Business Mentor", image: "/Images/7-1.PNG" },
+        { id: 9, name: "Marie Durant", role: "Business Mentor", image: "/Images/7-2.PNG" },
     ];
 
     const column1 = mentors.slice(0, 3);
