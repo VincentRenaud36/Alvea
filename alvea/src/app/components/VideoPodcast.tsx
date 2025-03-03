@@ -33,13 +33,15 @@ function VideoPodcast() {
                     <div className="flex flex-col items-center">
                         {column1.map((mentor) => (
                             <div key={mentor.id} className="relative rounded-lg overflow-hidden mt-4">
-                                <Image
-                                    src={mentor.image}
-                                    alt={`Photo de ${mentor.name}`}
-                                    width={400}
-                                    height={587}
-                                    className="object-cover w-[330px] h-[587px] rounded-lg"
-                                />
+                                <Link href="/discover">
+                                    <Image
+                                        src={mentor.image}
+                                        alt={`Photo de ${mentor.name}`}
+                                        width={400}
+                                        height={587}
+                                        className="object-cover w-[330px] h-[587px] rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
+                                    />
+                                </Link>
                             </div>
                         ))}
                     </div>
@@ -48,13 +50,15 @@ function VideoPodcast() {
                     <div className="flex flex-col items-center mt-20">
                         {column2.map((mentor) => (
                             <div key={mentor.id} className="relative rounded-lg overflow-hidden mt-4">
-                                <Image
-                                    src={mentor.image}
-                                    alt={`Photo de ${mentor.name}`}
-                                    width={400}
-                                    height={400}
-                                    className="object-cover w-[330px] h-[587px] rounded-lg"
-                                />
+                                <Link href="/discover">
+                                    <Image
+                                        src={mentor.image}
+                                        alt={`Photo de ${mentor.name}`}
+                                        width={400}
+                                        height={400}
+                                        className="object-cover w-[330px] h-[587px] rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
+                                    />
+                                </Link>
                             </div>
                         ))}
                     </div>
@@ -63,13 +67,15 @@ function VideoPodcast() {
                     <div className="flex flex-col items-center mt-40">
                         {column3.map((mentor) => (
                             <div key={mentor.id} className="relative rounded-lg overflow-hidden mt-4">
-                                <Image
-                                    src={mentor.image}
-                                    alt={`Photo de ${mentor.name}`}
-                                    width={400}
-                                    height={400}
-                                    className="object-cover w-[330px] h-[587px] rounded-lg"
-                                />
+                                <Link href="/discover">
+                                    <Image
+                                        src={mentor.image}
+                                        alt={`Photo de ${mentor.name}`}
+                                        width={400}
+                                        height={400}
+                                        className="object-cover w-[330px] h-[587px] rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
+                                    />
+                                </Link>
                             </div>
                         ))}
                     </div>
