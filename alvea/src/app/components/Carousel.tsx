@@ -23,10 +23,10 @@ console.log(data);*/}
   ];
 
   return (
-    <div className="bg-white py-16 flex flex-col items-center">
+    <div className="bg-white py-16 flex flex-col items-center mt-24">
       <div className="text-center px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-          Pourquoi se limiter à un <span className="bg-acquamarine px-2">seul mentor</span> quand vous en avez des <span className="bg-texas-rose px-2">centaines</span>
+        <h2 className="text-3xl md:text-4xl font-semibold text-gray-900">
+          Pourquoi se limiter à un <span className="bg-acquamarine px-1">seul mentor</span> quand <br /> vous en avez des <span className="bg-texas-rose px-1">centaines</span>
         </h2>
       </div>
       <div className="w-full mt-4 px-4 flex justify-center">

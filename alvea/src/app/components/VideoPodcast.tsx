@@ -22,9 +22,9 @@ function VideoPodcast() {
     const column3 = mentors.slice(6, 9);
 
     return (
-        <div className="bg-white py-16 flex flex-col items-center">
+        <div className="bg-white py-16 flex flex-col items-center mt-24">
             <div className='text-center px-4'>
-                <h2 className='text-3xl md:text-4xl font-bold'>Accédez à des centaines de vidéos et podcasts de professionnels</h2>
+                <h2 className='text-3xl md:text-4xl font-semibold'>Accédez à des centaines de vidéos <br /> et podcasts de professionnels</h2>
                 <Link href="/discover"><button className='bg-bittersweet text-white px-8 py-5 rounded-xl text-md md:text-xl font-bold mt-8'>Découvrir</button></Link>
             </div>
             <div className="max-w-6xl mx-auto flex justify-center px-4 sm:px-6 lg:px-8">
