@@ -1,0 +1,33 @@
+/* Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+  --jelly-bean: #1F7A93;
+  --texas-rose: #FFB84D;
+  --bittersweet: #FF6E61;
+  --acquamarine: #80D8E5;
+  --pelorus: #3BB5B5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #ffffff;
+    --foreground: #000000;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer components {
+  .before-title::before {
+    content: ""; /* ou n'importe quel autre contenu */
+  }
+}
