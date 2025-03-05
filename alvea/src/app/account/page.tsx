@@ -173,7 +173,7 @@ export default function Home() {
 
             <div className="lg:ml-6 px-4">
               <h3 className="text-2xl font-semibold">Présentation</h3>
-              <p className="mt-4">
+              <p className="text-lg mt-4 font-medium">
                 Je m&apos;appelle Robert Dubois, j&apos;ai 47 ans, et je suis responsable de magasin au Comptoir de
                 Mathilde, une enseigne spécialisée dans les gourmandises artisanales. Mon rôle consiste à gérer
                 l&apos;ensemble des opérations du magasin : de l&apos;organisation des équipes à la gestion des stocks,
@@ -282,13 +282,13 @@ export default function Home() {
               {days.map((day, idx) => (
                 <div key={idx} className="flex flex-col items-center">
                   {/* "Carte" jour-date avec top/bottom, contour jelly-bean */}
-                  <div className="rounded-md border border-[var(--jelly-bean)] overflow-hidden w-full text-center">
+                  <div className="rounded-md border border-[var(--jelly-bean)] overflow-hidden w-3/4 text-center">
                     {/* Partie haute : fond jelly-bean, texte blanc */}
-                    <div className="bg-[var(--jelly-bean)] text-white p-2 font-semibold">
+                    <div className="bg-[var(--jelly-bean)] text-white p-1 font-bold">
                       {day.dayName}
                     </div>
                     {/* Partie basse : fond blanc, texte noir */}
-                    <div className="bg-white text-black p-2">
+                    <div className="bg-white text-black p-1 font-bold">
                       {day.date}
                     </div>
                   </div>
@@ -301,7 +301,7 @@ export default function Home() {
                       return slot ? (
                         <span
                           key={i}
-                          className="bg-[var(--acquamarine)] text-white text-center rounded-md px-2 py-1 w-[60px]"
+                          className="bg-[var(--acquamarine)] text-white text-center rounded-md px-2 py-1 w-[60px] font-bold"
                         >
                           {slot}
                         </span>

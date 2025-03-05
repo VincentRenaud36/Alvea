@@ -14,6 +14,11 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import Header from "../components/Header";
 
+/** Exemple : limiter à 2 lignes dans la bulle (optionnel) 
+ *  Nécessite @tailwindcss/line-clamp dans tailwind.config.js
+ */
+// import "@tailwindcss/line-clamp";
+
 export default function MessagerieApp() {
   const [activeConversation, setActiveConversation] = useState<Conversation | null>(conversations[0]);
   const [newMessage, setNewMessage] = useState("");
@@ -21,7 +26,7 @@ export default function MessagerieApp() {
   const [showMobileConversation, setShowMobileConversation] = useState(false);
 
   const handleSendMessage = () => {
-    if (newMessage.trim() === "" || !activeConversation) return;
+    if (!activeConversation || newMessage.trim() === "") return;
 
     const newMsg: Message = {
       id: `msg-${Date.now()}`,
@@ -31,7 +36,7 @@ export default function MessagerieApp() {
       isRead: true,
     };
 
-    const updatedConversations = allConversations.map((conv) => {
+    const updated = allConversations.map((conv) => {
       if (conv.id === activeConversation.id) {
         return {
           ...conv,
@@ -42,10 +47,8 @@ export default function MessagerieApp() {
       return conv;
     });
 
-    setAllConversations(updatedConversations);
-    setActiveConversation(
-      updatedConversations.find((conv) => conv.id === activeConversation.id) || null
-    );
+    setAllConversations(updated);
+    setActiveConversation(updated.find((c) => c.id === activeConversation.id) || null);
     setNewMessage("");
   };
 
@@ -57,18 +60,20 @@ export default function MessagerieApp() {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const messageDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    
     if (messageDate.getTime() === today.getTime()) {
       return format(date, "HH:mm");
     } else {
       return format(date, "d MMM", { locale: fr });
     }
   };
-  const isLoggedIn = true; // Changez à `true` pour l'état connecté
+
+  const isLoggedIn = true; // Ex. : utilisateur connecté
 
   return (
     <div className="flex flex-col h-screen bg-background">
       <Header isLoggedIn={isLoggedIn} />
+
+      {/* Barre du haut */}
       <header className="border-b p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="mr-2">
@@ -85,9 +90,14 @@ export default function MessagerieApp() {
         </Link>
       </header>
 
+      {/* Contenu principal */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Liste des conversations (masquée sur mobile quand une conversation est active) */}
-        <div className={`w-full md:w-1/3 border-r ${showMobileConversation ? "hidden md:block" : "block"}`}>
+        {/* LISTE DES CONVERSATIONS */}
+        <div
+          className={`w-full md:w-1/3 border-r ${
+            showMobileConversation ? "hidden md:block" : "block"
+          }`}
+        >
           <div className="p-4 border-b">
             <h2 className="font-semibold">Conversations</h2>
           </div>
@@ -95,7 +105,7 @@ export default function MessagerieApp() {
             {allConversations.map((conversation) => {
               const otherUser = getOtherParticipant(conversation);
               const lastMessage = conversation.messages[conversation.messages.length - 1];
-              
+
               return (
                 <div key={conversation.id}>
                   <button
@@ -107,7 +117,8 @@ export default function MessagerieApp() {
                       setShowMobileConversation(true);
                     }}
                   >
-                    <div className="relative">
+                    {/* AVATAR + ONLINE */}
+                    <div className="relative flex-shrink-0">
                       <Avatar>
                         <AvatarImage src={otherUser.avatar} alt={otherUser.name} />
                         <AvatarFallback>{otherUser.name.charAt(0)}</AvatarFallback>
@@ -116,6 +127,8 @@ export default function MessagerieApp() {
                         <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-background"></span>
                       )}
                     </div>
+
+                    {/* TEXTE: nom + dernier message */}
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-baseline">
                         <p className="font-medium truncate">{otherUser.name}</p>
@@ -123,7 +136,12 @@ export default function MessagerieApp() {
                           {formatMessageDate(conversation.lastActivity)}
                         </span>
                       </div>
-                      <p className="text-sm text-muted-foreground truncate">
+                      {/* TRONCATURE sur une ligne */}
+                      <p
+                        className="text-sm text-muted-foreground 
+                          overflow-hidden text-ellipsis whitespace-nowrap 
+                          block w-full"
+                      >
                         {lastMessage.text}
                       </p>
                     </div>
@@ -135,11 +153,17 @@ export default function MessagerieApp() {
           </ScrollArea>
         </div>
 
-        {/* Conversation active (masquée sur mobile quand aucune conversation n'est sélectionnée) */}
-        <div className={`w-full md:w-2/3 flex flex-col ${!showMobileConversation ? "hidden md:flex" : "flex"}`}>
+        {/* ZONE DE CONVERSATION ACTIVE */}
+        <div
+          className={`w-full md:w-2/3 flex flex-col ${
+            !showMobileConversation ? "hidden md:flex" : "flex"
+          }`}
+        >
           {activeConversation ? (
             <>
+              {/* HEADER DE LA CONVERSATION */}
               <div className="p-4 border-b flex items-center gap-3">
+                {/* Bouton retour sur mobile */}
                 <Button
                   variant="ghost"
                   size="icon"
@@ -149,22 +173,27 @@ export default function MessagerieApp() {
                   <ArrowLeft className="h-5 w-5" />
                 </Button>
                 <Avatar>
-                  <AvatarImage 
-                    src={getOtherParticipant(activeConversation).avatar} 
-                    alt={getOtherParticipant(activeConversation).name} 
+                  <AvatarImage
+                    src={getOtherParticipant(activeConversation).avatar}
+                    alt={getOtherParticipant(activeConversation).name}
                   />
                   <AvatarFallback>
                     {getOtherParticipant(activeConversation).name.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <h2 className="font-semibold">{getOtherParticipant(activeConversation).name}</h2>
+                  <h2 className="font-semibold">
+                    {getOtherParticipant(activeConversation).name}
+                  </h2>
                   <p className="text-xs text-muted-foreground">
-                    {getOtherParticipant(activeConversation).isOnline ? "En ligne" : "Hors ligne"}
+                    {getOtherParticipant(activeConversation).isOnline
+                      ? "En ligne"
+                      : "Hors ligne"}
                   </p>
                 </div>
               </div>
 
+              {/* MESSAGES */}
               <ScrollArea className="flex-1 p-4">
                 <div className="space-y-4">
                   {activeConversation.messages.map((message) => {
@@ -176,15 +205,20 @@ export default function MessagerieApp() {
                     return (
                       <div
                         key={message.id}
-                        className={`flex ${isCurrentUser ? "justify-end" : "justify-start"}`}
+                        className={`flex ${
+                          isCurrentUser ? "justify-end" : "justify-start"
+                        }`}
                       >
                         <div className="flex gap-2 max-w-[80%]">
+                          {/* Avatar si c'est pas moi */}
                           {!isCurrentUser && (
-                            <Avatar className="h-8 w-8">
+                            <Avatar className="h-8 w-8 flex-shrink-0">
                               <AvatarImage src={sender?.avatar} alt={sender?.name} />
                               <AvatarFallback>{sender?.name.charAt(0)}</AvatarFallback>
                             </Avatar>
                           )}
+
+                          {/* Bulle de message */}
                           <div>
                             <Card
                               className={`p-3 ${
@@ -193,7 +227,11 @@ export default function MessagerieApp() {
                                   : "bg-muted"
                               }`}
                             >
-                              <p className="text-sm">{message.text}</p>
+                              {/* Si vous voulez 2 lignes max, activez line-clamp-2 */}
+                              {/* <p className="text-sm line-clamp-2 break-words"> */}
+                              <p className="text-sm break-words">
+                                {message.text}
+                              </p>
                             </Card>
                             <p className="text-xs text-muted-foreground mt-1">
                               {format(message.timestamp, "HH:mm")}
@@ -206,6 +244,7 @@ export default function MessagerieApp() {
                 </div>
               </ScrollArea>
 
+              {/* BARRE D'ENVOI */}
               <div className="p-4 border-t">
                 <form
                   onSubmit={(e) => {
@@ -227,6 +266,7 @@ export default function MessagerieApp() {
               </div>
             </>
           ) : (
+            // Si aucune conversation n'est active
             <div className="flex-1 flex flex-col items-center justify-center p-4 text-center">
               <MessageSquare className="h-12 w-12 text-muted-foreground mb-4" />
               <h3 className="text-lg font-medium">Aucune conversation sélectionnée</h3>

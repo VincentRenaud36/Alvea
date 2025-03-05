@@ -6,8 +6,7 @@ import Link from "next/link";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-// À ajouter après vos imports (ex. ligne 10)
-
+// Composant pour les miniatures vidéo
 function VideoThumbnail({ thumbUrl, alt }: { thumbUrl: string; alt: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
@@ -19,12 +18,12 @@ function VideoThumbnail({ thumbUrl, alt }: { thumbUrl: string; alt: string }) {
       .then(response => {
         if (!response.ok) {
           // Si l'image HD n'existe pas, utilise la version standard
-          setImageUrl(thumbUrl.replace('maxresdefault', 'hqdefault'));
+          setImageUrl(thumbUrl.replace("maxresdefault", "hqdefault"));
         }
       })
       .catch(() => {
         // En cas d'erreur, utilise la version standard
-        setImageUrl(thumbUrl.replace('maxresdefault', 'hqdefault'));
+        setImageUrl(thumbUrl.replace("maxresdefault", "hqdefault"));
       });
   }, [thumbUrl]);
 
@@ -55,7 +54,6 @@ function VideoThumbnail({ thumbUrl, alt }: { thumbUrl: string; alt: string }) {
   );
 }
 
-
 /** Types de données */
 interface FilterCategory {
   category: string;
@@ -76,7 +74,7 @@ interface Content {
   userJob: string;
   userDescription?: string;
   image?: string; // Pour le podcast
-  spotifyEmbedUrl?: string; // Ajouté pour les podcasts
+  spotifyEmbedUrl?: string; // Pour les podcasts
 }
 
 /** Filtres (exemple) */
@@ -116,7 +114,7 @@ const filterCategories: FilterCategory[] = [
   },
 ];
 
-/** Tableau mixte : 8 vidéos, 11 podcasts */
+/** Tableau mixte : vidéos et podcasts */
 const allContents: Content[] = [
   // Vidéos existantes
   {
@@ -268,14 +266,12 @@ export default function Discover() {
   const [filtersState, setFiltersState] = useState<FilterState>({});
 
   /** Catégories de filtres dépliées/repliées */
-  const [expandedCats, setExpandedCats] = useState<{
-    [cat: string]: boolean;
-  }>(() =>
-    filterCategories.reduce(
-      (acc, fc) => ({ ...acc, [fc.category]: true }),
-      {}
-    )
+  const [expandedCats, setExpandedCats] = useState<{ [cat: string]: boolean }>(() =>
+    filterCategories.reduce((acc, fc) => ({ ...acc, [fc.category]: true }), {})
   );
+
+  /** Recherche */
+  const [searchTerm, setSearchTerm] = useState("");
 
   /** Modal : index de l'élément affiché, ou null si fermé */
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -292,37 +288,27 @@ export default function Discover() {
   /** Mobile filters */
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  // Désactive le scroll de la page en background
+  // Désactive le scroll de la page en background lors de l'ouverture du modal
   useEffect(() => {
-    if (selectedIndex !== null) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = selectedIndex !== null ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [selectedIndex]);
 
-  // Gestion des événements du lecteur YouTube
+  // Gestion des événements du lecteur YouTube (modal)
   useEffect(() => {
     if (selectedIndex === null) return;
 
     const activeIframe = document.querySelectorAll("iframe")[selectedIndex];
-
     if (!activeIframe) return;
 
     const handlePlayerStateChange = (event: MessageEvent) => {
-      console.log("Received message:", event.data);
       try {
         const data = event.data;
-        console.log("YouTube Event Data:", data);
-
         if (data.event === "onStateChange") {
           playerStateRef.current = data.data;
-
           if (data.data === 0) {
-            console.log("Video ended. Attempting to replay...");
             activeIframe.contentWindow?.postMessage(
               JSON.stringify({
                 event: "command",
@@ -339,9 +325,6 @@ export default function Discover() {
     };
 
     window.addEventListener("message", handlePlayerStateChange);
-    console.log("Added message event listener for YouTube iframe.");
-
-    // Forcer la lecture initiale avec un léger délai
     setTimeout(() => {
       activeIframe.contentWindow?.postMessage(
         JSON.stringify({
@@ -349,64 +332,58 @@ export default function Discover() {
           func: "playVideo",
           args: "",
         }),
-        "https://www.youtube.com" // Spécifiez l'origine pour des raisons de sécurité
+        "https://www.youtube.com"
       );
-      console.log("Sent playVideo command to YouTube iframe.");
-    }, 1000); // Attendre 1 seconde pour s'assurer que l'iframe est prête
+    }, 1000);
 
     return () => {
       window.removeEventListener("message", handlePlayerStateChange);
-      console.log("Removed message event listener for YouTube iframe.");
     };
   }, [selectedIndex]);
 
-  // Nouveau useEffect pour interroger et afficher l'état du lecteur toutes les secondes
+  // Affichage de l'état du lecteur toutes les secondes (pour debug)
   useEffect(() => {
     if (selectedIndex === null) return;
-
     const intervalId = setInterval(() => {
-      console.log(
-        `Player State at ${new Date().toLocaleTimeString()}:`,
-        playerStateRef.current
-      );
-    }, 1000); // Toutes les secondes
-
-    return () => {
-      clearInterval(intervalId); // Nettoyer l'intervalle lors du démontage ou du changement
-    };
+      console.log(`Player State at ${new Date().toLocaleTimeString()}:`, playerStateRef.current);
+    }, 1000);
+    return () => clearInterval(intervalId);
   }, [selectedIndex]);
 
-  /** Gère l'alternance "vidéo" / "podcast" */
+  /** Gestion de l'alternance "vidéo" / "podcast" */
   const handleTypeChange = (type: "video" | "podcast") => {
     setSelectedType(type);
-    setSelectedIndex(null); // Ferme le modal si on en avait un
+    setSelectedIndex(null);
     setDescExpanded(false);
+    setSearchTerm(""); // réinitialiser la recherche lors du changement
   };
 
-  /** Toggle un filtre */
+  /** Toggle d'un filtre */
   const toggleFilterOption = (option: string) => {
-    setFiltersState((prev) => ({
-      ...prev,
-      [option]: !prev[option],
-    }));
+    setFiltersState((prev) => ({ ...prev, [option]: !prev[option] }));
   };
 
-  /** Toggle l'expansion d'une catégorie de filtre */
+  /** Toggle de l'expansion d'une catégorie de filtre */
   const toggleCat = (cat: string) => {
-    setExpandedCats((prev) => ({
-      ...prev,
-      [cat]: !prev[cat],
-    }));
+    setExpandedCats((prev) => ({ ...prev, [cat]: !prev[cat] }));
   };
 
-  /** Liste des items à afficher => on filtre par type. 
-   * (On pourrait aussi filtrer selon filtersState si besoin.)
+  /**
+   * Liste des items à afficher :
+   * On filtre par type et par la recherche.
+   * La recherche compare le début (startsWith) du nom et de la profession, insensible à la casse.
    */
-  const displayedContents = allContents.filter(
-    (c) => c.type === selectedType
-  );
+  const displayedContents = allContents.filter((c) => {
+    if (c.type !== selectedType) return false;
+    if (!searchTerm) return true;
+    const lowerSearch = searchTerm.toLowerCase();
+    return (
+      c.name.toLowerCase().startsWith(lowerSearch) ||
+      c.profession.toLowerCase().startsWith(lowerSearch)
+    );
+  });
 
-  /** Ouvrir le modal sur l'item d'index i */
+  /** Ouvrir le modal pour l'élément d'index i */
   const openModal = (i: number) => {
     setSelectedIndex(i);
     setScrollLock(false);
@@ -420,23 +397,17 @@ export default function Discover() {
     setDescExpanded(false);
   };
 
-  /** Au scroll molette, on passe item suivant / précédent */
+  /** Navigation via la molette */
   const goTo = (newIndex: number) => {
     setScrollLock(true);
     setDescExpanded(false);
     setSelectedIndex(newIndex);
-    // cooldown 300ms
-    setTimeout(() => {
-      setScrollLock(false);
-    }, 300);
+    setTimeout(() => setScrollLock(false), 300);
   };
 
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     if (selectedIndex === null || scrollLock) return;
-    if (
-      e.deltaY > 0 &&
-      selectedIndex < displayedContents.length - 1
-    ) {
+    if (e.deltaY > 0 && selectedIndex < displayedContents.length - 1) {
       goTo(selectedIndex + 1);
     } else if (e.deltaY < 0 && selectedIndex > 0) {
       goTo(selectedIndex - 1);
@@ -449,56 +420,52 @@ export default function Discover() {
     touchStartRef.current = e.touches[0].clientY;
   };
   const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (selectedIndex === null || scrollLock) return;
-    if (touchStartRef.current === null) return;
-    const diff =
-      touchStartRef.current - e.changedTouches[0].clientY;
+    if (selectedIndex === null || scrollLock || touchStartRef.current === null) return;
+    const diff = touchStartRef.current - e.changedTouches[0].clientY;
     if (Math.abs(diff) > 50) {
-      // swipe up => next
-      if (
-        diff > 0 &&
-        selectedIndex < displayedContents.length - 1
-      ) {
-        goTo(selectedIndex + 1);
-      }
-      // swipe down => prev
-      else if (diff < 0 && selectedIndex > 0) {
-        goTo(selectedIndex - 1);
-      }
+      diff > 0 && selectedIndex < displayedContents.length - 1
+        ? goTo(selectedIndex + 1)
+        : diff < 0 && selectedIndex > 0 && goTo(selectedIndex - 1);
     }
     touchStartRef.current = null;
   };
 
-  /** Toggle la description "Plus/Moins" */
+  /** Toggle de la description "Plus/Moins" */
   const toggleDescription = () => setDescExpanded((p) => !p);
 
-  /** Partager item */
+  /** Partager l'item */
   const shareItem = () => {
     if (selectedIndex === null) return;
     const itm = displayedContents[selectedIndex];
     if (itm.type === "video" && itm.youtubeId) {
       const url = `https://youtu.be/${itm.youtubeId}`;
       if (navigator.share) {
-        navigator
-          .share({ title: itm.name, text: "Regarde cette vidéo !", url })
-          .catch(() => {});
+        navigator.share({ title: itm.name, text: "Regarde cette vidéo !", url }).catch(() => {});
       } else {
-        navigator.clipboard
-          .writeText(url)
-          .then(() => alert("Lien copié !"))
-          .catch(() => alert("Impossible de copier."));
+        navigator.clipboard.writeText(url).then(() => alert("Lien copié !")).catch(() => alert("Impossible de copier."));
       }
     } else {
       alert(`Partager ce podcast: ${itm.name}`);
     }
   };
 
-  // L'élément sélectionné pour le modal
+  // Élément pour le modal
   const item = selectedIndex !== null ? displayedContents[selectedIndex] : null;
 
   return (
     <>
       <Header isLoggedIn />
+
+      {/* Barre de recherche */}
+      <div className="container mx-auto px-4 py-4">
+        <input
+          type="text"
+          placeholder="Rechercher..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-bittersweet"
+        />
+      </div>
 
       {/* Bouton filtres mobile */}
       <button
@@ -515,27 +482,19 @@ export default function Discover() {
 
       {/* Drawer mobile des filtres */}
       <div 
-        className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 md:hidden ${
-          mobileFiltersOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
+        className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 md:hidden ${mobileFiltersOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setMobileFiltersOpen(false)}
       >
         <div
-          className={`fixed right-0 top-0 h-full w-80 bg-white p-6 shadow-xl transition-transform duration-300 transform ${
-            mobileFiltersOpen ? 'translate-x-0' : 'translate-x-full'
-          }`}
+          className={`fixed right-0 top-0 h-full w-80 bg-white p-6 shadow-xl transition-transform duration-300 transform ${mobileFiltersOpen ? 'translate-x-0' : 'translate-x-full'}`}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-lg font-bold">Filtres</h3>
-            <button
-              className="text-gray-500 hover:text-gray-700"
-              onClick={() => setMobileFiltersOpen(false)}
-            >
+            <button className="text-gray-500 hover:text-gray-700" onClick={() => setMobileFiltersOpen(false)}>
               ✕
             </button>
           </div>
-
           <div className="overflow-y-auto h-full pb-20">
             <div className="mb-6">
               <label className="flex items-center gap-2 mb-2 cursor-pointer">
@@ -559,13 +518,9 @@ export default function Discover() {
                 Podcast
               </label>
             </div>
-
             {filterCategories.map((cat) => (
               <div key={cat.category} className="mb-4">
-                <h4
-                  className="font-semibold mb-2 flex justify-between cursor-pointer"
-                  onClick={() => toggleCat(cat.category)}
-                >
+                <h4 className="font-semibold mb-2 flex justify-between cursor-pointer" onClick={() => toggleCat(cat.category)}>
                   {cat.category}
                   <span>{expandedCats[cat.category] ? "▲" : "▼"}</span>
                 </h4>
@@ -594,11 +549,7 @@ export default function Discover() {
       <div className="container mx-auto px-4 py-8 flex gap-8">
         {/* Sidebar desktop */}
         <div className="w-1/4 hidden md:block">
-          <h3 className="font-bold text-lg mb-4 text-primary">
-            Filtrer
-          </h3>
-
-          {/* Choix forcé : Vidéo ou Podcast */}
+          <h3 className="font-bold text-lg mb-4 text-primary">Filtrer</h3>
           <div className="mb-6">
             <label className="flex items-center gap-2 mb-2 cursor-pointer">
               <input
@@ -621,18 +572,11 @@ export default function Discover() {
               Podcast
             </label>
           </div>
-
-          {/* Autres filtres */}
           {filterCategories.map((cat) => (
             <div key={cat.category} className="mb-4">
-              <h4
-                className="font-semibold mb-2 flex justify-between cursor-pointer"
-                onClick={() => toggleCat(cat.category)}
-              >
+              <h4 className="font-semibold mb-2 flex justify-between cursor-pointer" onClick={() => toggleCat(cat.category)}>
                 {cat.category}
-                <span>
-                  {expandedCats[cat.category] ? "▲" : "▼"}
-                </span>
+                <span>{expandedCats[cat.category] ? "▲" : "▼"}</span>
               </h4>
               {expandedCats[cat.category] && (
                 <ul className="space-y-2">
@@ -654,11 +598,9 @@ export default function Discover() {
           ))}
         </div>
 
-        {/* Grille */}
+        {/* Grille des contenus */}
         <div className={`grid gap-4 md:gap-6 w-full md:w-3/4 ${
-          selectedType === 'video' 
-            ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
-            : 'grid-cols-1'
+          selectedType === "video" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
         }`}>
           {displayedContents.map((c, i) => {
             if (c.type === "video" && c.youtubeId) {
@@ -672,7 +614,11 @@ export default function Discover() {
                   <div className="absolute inset-0">
                     <VideoThumbnail thumbUrl={thumbUrl} alt={c.name} />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
+                  {/* Gradient noir personnalisé */}
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{ backgroundImage: "linear-gradient(to top, black 10%, transparent 25%)" }}
+                  />
                   <div className="absolute bottom-2 left-2 text-white">
                     <Link href={`/profil/${c.userName}`} className="flex items-center space-x-2">
                       <div className="w-10 h-10 rounded-full flex-shrink-0 relative overflow-hidden">
@@ -715,7 +661,6 @@ export default function Discover() {
                       <span className="text-xs sm:text-sm text-white">{c.profession}</span>
                     </Link>
                   </div>
-        
                   {/* Iframe Spotify */}
                   <div className="flex-grow">
                     {c.spotifyEmbedUrl.includes("open.spotify.com/embed") ? (
@@ -726,9 +671,6 @@ export default function Discover() {
                         loading="lazy"
                         allowFullScreen
                         title={`Podcast de ${c.name}`}
-                        style={{
-                          backgroundColor: 'jelly-bean'
-                        }}
                       ></iframe>
                     ) : null}
                   </div>
@@ -743,7 +685,7 @@ export default function Discover() {
 
       <Footer isLoggedIn />
 
-      {/* MODAL => rendu conditionnel avec animation de glissement uniquement pour les vidéos */}
+      {/* Modal pour vidéos */}
       {item && item.type === "video" && (
         <div
           className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center"
@@ -756,12 +698,9 @@ export default function Discover() {
             onTouchEnd={handleTouchEnd}
             onClick={closeModal}
           >
-            {/* Container: translateY(-selectedIndex * 100%) */}
             <div
               className="absolute top-0 left-0 w-full h-full transition-transform duration-500 ease-out"
-              style={{
-                transform: `translateY(-${selectedIndex! * 100}%)`,
-              }}
+              style={{ transform: `translateY(-${selectedIndex! * 100}%)` }}
             >
               {displayedContents.map((elem, i) => (
                 <div
@@ -771,45 +710,35 @@ export default function Discover() {
                 >
                   {elem.type === "video" && elem.youtubeId ? (
                     <div className="relative aspect-[9/16] w-[280px] sm:w-[320px] md:w-[400px] lg:w-[450px] rounded-lg overflow-hidden bg-black animate-slide-in">
-                      {/* Croix */}
                       <button
                         className="absolute top-2 right-2 text-white text-3xl z-10"
                         onClick={closeModal}
                       >
                         ✕
                       </button>
-
-                      <div
-                        className="yt-wrapper w-full h-full"
-                        onClick={(e) => e.stopPropagation()}
-                      >
+                      <div className="yt-wrapper w-full h-full" onClick={(e) => e.stopPropagation()}>
                         <div className="yt-frame-container">
                           <iframe
-                            id={`player-${elem.youtubeId}`} // Assignation d'un ID unique
-                            key={elem.youtubeId} // 🔥 Force le rechargement de l'iframe si nécessaire
-                            src={`https://www.youtube.com/embed/${elem.youtubeId}?enablejsapi=1&autoplay=1&mute=1&modestbranding=1&controls=0&playsinline=1&rel=0&showinfo=0`} // Suppression de la duplication de l'ID
+                            id={`player-${elem.youtubeId}`}
+                            key={elem.youtubeId}
+                            src={`https://www.youtube.com/embed/${elem.youtubeId}?enablejsapi=1&autoplay=1&mute=1&modestbranding=1&controls=0&playsinline=1&rel=0&showinfo=0`}
                             title="YouTube short"
                             frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             referrerPolicy="strict-origin-when-cross-origin"
                             allowFullScreen
-                            loading="lazy" // 🔥 Ajout du chargement paresseux
+                            loading="lazy"
                             className="w-full h-full"
                           />
                         </div>
                       </div>
-
-                      {/* Overlay d'info (bas) */}
                       <div
                         className="absolute bottom-0 left-0 w-full p-4 text-white bg-gradient-to-t from-black/60 to-transparent pointer-events-none"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <div className="pointer-events-auto relative">
                           <div className="flex items-center justify-between">
-                            <Link
-                              href={`/profil/${elem.userName}`}
-                              className="flex items-center gap-2 no-underline"
-                            >
+                            <Link href={`/profil/${elem.userName}`} className="flex items-center gap-2 no-underline">
                               <div className="w-10 h-10 rounded-full relative overflow-hidden">
                                 <Image
                                   src={elem.image || "/Images/default-profile.png"}
@@ -819,22 +748,14 @@ export default function Discover() {
                                 />
                               </div>
                               <div className="flex flex-col text-sm no-underline">
-                                <span className="font-semibold no-underline">
-                                  {elem.userName}
-                                </span>
-                                <span className="opacity-90 text-xs no-underline">
-                                  {elem.userJob}
-                                </span>
+                                <span className="font-semibold no-underline">{elem.userName}</span>
+                                <span className="opacity-90 text-xs no-underline">{elem.userJob}</span>
                               </div>
                             </Link>
-                            <button
-                              className="border border-white rounded-full px-3 py-1 text-sm"
-                              onClick={shareItem}
-                            >
+                            <button className="border border-white rounded-full px-3 py-1 text-sm" onClick={shareItem}>
                               ↗
                             </button>
                           </div>
-
                           {elem.userDescription && (
                             <div className="text-sm mt-2">
                               {!descExpanded ? (
@@ -842,20 +763,14 @@ export default function Discover() {
                                   <span className="whitespace-nowrap overflow-hidden text-ellipsis inline-block max-w-[70%] align-middle">
                                     {elem.userDescription}
                                   </span>{" "}
-                                  <button
-                                    onClick={toggleDescription}
-                                    className="text-xs no-underline ml-1"
-                                  >
+                                  <button onClick={toggleDescription} className="text-xs no-underline ml-1">
                                     Plus
                                   </button>
                                 </>
                               ) : (
                                 <>
                                   <span>{elem.userDescription}</span>{" "}
-                                  <button
-                                    onClick={toggleDescription}
-                                    className="text-xs no-underline"
-                                  >
+                                  <button onClick={toggleDescription} className="text-xs no-underline">
                                     Moins
                                   </button>
                                 </>
@@ -873,9 +788,7 @@ export default function Discover() {
         </div>
       )}
 
-      {/* CSS => "décalage" pour masquer le top info YouTube */}
       <style jsx global>{`
-        /* Animation de slide-in */
         @keyframes slideIn {
           from {
             transform: translateY(100%);
@@ -886,7 +799,6 @@ export default function Discover() {
             opacity: 1;
           }
         }
-
         .animate-slide-in {
           animation: slideIn 0.5s ease-out;
         }
@@ -931,32 +843,28 @@ export default function Discover() {
             height: 100%;
           }
         }
-
-          @media screen and (max-width: 767px) {
-    .iframe-container {
-      position: relative;
-      height: 152px;
-      overflow: hidden;
-    }
-
-    .iframe-container iframe {
-      width: 100%;
-      height: 100%;
-    }
-  }
-
-  @media screen and (min-width: 768px) {
-    .iframe-container {
-      position: relative;
-      height: 152px;
-      overflow: hidden;
-    }
-
-    .iframe-container iframe {
-      width: 100%;
-      height: 100%;
-    }
-  }
+        @media screen and (max-width: 767px) {
+          .iframe-container {
+            position: relative;
+            height: 152px;
+            overflow: hidden;
+          }
+          .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        @media screen and (min-width: 768px) {
+          .iframe-container {
+            position: relative;
+            height: 152px;
+            overflow: hidden;
+          }
+          .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+          }
+        }
       `}</style>
     </>
   );

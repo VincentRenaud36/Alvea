@@ -20,9 +20,9 @@ export default function Home() {
                 Créer un nouveau sujet
               </button>
             </div>
-            <div className="space-y-4 flex flex-col items-center">
+            <div className="space-y-4">
               {/* Sujet 1 */}
-              <div className="bg-white rounded-xl p-4 border-2 w-full max-w-md">
+              <div className="bg-white rounded-xl p-4 border-2">
                 <div className="flex items-center gap-4">
                   <div className="relative w-[60px] h-[60px] overflow-hidden rounded-full">
                     <Image
@@ -45,7 +45,7 @@ export default function Home() {
               </div>
 
               {/* Sujet 2 */}
-              <div className="bg-white rounded-xl p-4 border-2 w-full max-w-md">
+              <div className="bg-white rounded-xl p-4 border-2">
                 <div className="flex items-center gap-4">
                   <div className="relative w-[60px] h-[60px] overflow-hidden rounded-full">
                     <Image
@@ -68,7 +68,7 @@ export default function Home() {
               </div>
 
               {/* Sujet 3 */}
-              <div className="bg-white rounded-xl p-4 border-2 w-full max-w-md">
+              <div className="bg-white rounded-xl p-4 border-2">
                 <div className="flex items-center gap-4">
                   <div className="relative w-[60px] h-[60px] overflow-hidden rounded-full">
                     <Image
@@ -91,7 +91,7 @@ export default function Home() {
               </div>
 
               {/* Sujet 4 */}
-              <div className="bg-white rounded-xl p-4 border-2 w-full max-w-md">
+              <div className="bg-white rounded-xl p-4 border-2">
                 <div className="flex items-center gap-4">
                   <div className="relative w-[60px] h-[60px] overflow-hidden rounded-full">
                     <Image
@@ -114,7 +114,7 @@ export default function Home() {
               </div>
 
               {/* Sujet 5 */}
-              <div className="bg-white rounded-xl p-4 border-2 w-full max-w-md">
+              <div className="bg-white rounded-xl p-4 border-2">
                 <div className="flex items-center gap-4">
                   <div className="relative w-[60px] h-[60px] overflow-hidden rounded-full">
                     <Image
@@ -137,7 +137,7 @@ export default function Home() {
               </div>
 
               {/* Sujet 6 */}
-              <div className="bg-white rounded-xl p-4 border-2 w-full max-w-md">
+              <div className="bg-white rounded-xl p-4 border-2">
                 <div className="flex items-center gap-4">
                   <div className="relative w-[60px] h-[60px] overflow-hidden rounded-full">
                     <Image
@@ -160,7 +160,7 @@ export default function Home() {
               </div>
 
               {/* Sujet 7 */}
-              <div className="bg-white rounded-xl p-4 border-2 w-full max-w-md">
+              <div className="bg-white rounded-xl p-4 border-2">
                 <div className="flex items-center gap-4">
                   <div className="relative w-[60px] h-[60px] overflow-hidden rounded-full">
                     <Image
@@ -183,7 +183,7 @@ export default function Home() {
               </div>
 
               {/* Sujet 8 */}
-              <div className="bg-white rounded-xl p-4 border-2 w-full max-w-md">
+              <div className="bg-white rounded-xl p-4 border-2">
                 <div className="flex items-center gap-4">
                   <div className="relative w-[60px] h-[60px] overflow-hidden rounded-full">
                     <Image
@@ -206,7 +206,7 @@ export default function Home() {
               </div>
 
               {/* Sujet 9 */}
-              <div className="bg-white rounded-xl p-4 border-2 w-full max-w-md">
+              <div className="bg-white rounded-xl p-4 border-2">
                 <div className="flex items-center gap-4">
                   <div className="relative w-[60px] h-[60px] overflow-hidden rounded-full">
                     <Image
@@ -229,7 +229,7 @@ export default function Home() {
               </div>
 
               {/* Sujet 10 */}
-              <div className="bg-white rounded-xl p-4 border-2 w-full max-w-md">
+              <div className="bg-white rounded-xl p-4 border-2">
                 <div className="flex items-center gap-4">
                   <div className="relative w-[60px] h-[60px] overflow-hidden rounded-full">
                     <Image
@@ -252,7 +252,7 @@ export default function Home() {
               </div>
 
               {/* Sujet 11 */}
-              <div className="bg-white rounded-xl p-4 border-2 w-full max-w-md">
+              <div className="bg-white rounded-xl p-4 border-2">
                 <div className="flex items-center gap-4">
                   <div className="relative w-[60px] h-[60px] overflow-hidden rounded-full">
                     <Image
@@ -275,7 +275,7 @@ export default function Home() {
               </div>
 
               {/* Sujet 12 */}
-              <div className="bg-white rounded-xl p-4 border-2 w-full max-w-md">
+              <div className="bg-white rounded-xl p-4 border-2">
                 <div className="flex items-center gap-4">
                   <div className="relative w-[60px] h-[60px] overflow-hidden rounded-full">
                     <Image
@@ -298,7 +298,7 @@ export default function Home() {
               </div>
 
               {/* Sujet 13 */}
-              <div className="bg-white rounded-xl p-4 border-2 w-full max-w-md">
+              <div className="bg-white rounded-xl p-4 border-2">
                 <div className="flex items-center gap-4">
                   <div className="relative w-[60px] h-[60px] overflow-hidden rounded-full">
                     <Image
@@ -321,7 +321,7 @@ export default function Home() {
               </div>
 
               {/* Sujet 14 */}
-              <div className="bg-white rounded-xl p-4 border-2 w-full max-w-md">
+              <div className="bg-white rounded-xl p-4 border-2">
                 <div className="flex items-center gap-4">
                   <div className="relative w-[60px] h-[60px] overflow-hidden rounded-full">
                     <Image
